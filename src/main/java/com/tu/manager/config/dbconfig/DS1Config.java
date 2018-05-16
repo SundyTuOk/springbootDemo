@@ -27,9 +27,9 @@ import java.util.Properties;
 //        entityManagerFactoryRef = "entityManagerFactory1",//配置连接工厂 entityManagerFactory
 //        transactionManagerRef = "transactionManager1", //配置 事物管理器  transactionManager
 //        basePackages = {"com.tu.manager.dao"})//设置dao（repo）
-//@EnableJpaRepositories(
-//        entityManagerFactoryRef = "entityManagerFactory",//配置连接工厂 entityManagerFactory
-//        transactionManagerRef = "transactionManager")//设置dao（repo）所在位置
+@EnableJpaRepositories(
+        entityManagerFactoryRef = "entityManagerFactory1",//配置连接工厂 entityManagerFactory
+        transactionManagerRef = "transactionManager1")//设置dao（repo）所在位置
 public class DS1Config {
 
     @Bean(name = "dataSource1")
@@ -45,7 +45,7 @@ public class DS1Config {
 
 
     @Primary
-    @Bean(name = "entityManagerPrimary")
+    @Bean(name = "entityManagerPrimary1")
     public EntityManager entityManager() {
         return entityManagerFactory().getObject().createEntityManager();
     }
@@ -60,7 +60,7 @@ public class DS1Config {
 //    }
 
     @Primary
-    @Bean(name = "entityManagerFactory")
+    @Bean(name = "entityManagerFactory1")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource1);
@@ -84,7 +84,7 @@ public class DS1Config {
     }
 
     @Primary
-    @Bean(name = "transactionManager")
+    @Bean(name = "transactionManager1")
     public PlatformTransactionManager transactionManagerPrimary() {
         return new JpaTransactionManager(entityManagerFactory().getObject());
     }

@@ -14,23 +14,28 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
 
 @Aspect
 @Configuration
 public class DataSourceAspect {
 
+    @Resource(name = "entityManagerFactory1")
+    private LocalContainerEntityManagerFactoryBean entityManagerFactory;
     @Autowired
-    private SpringUtils springUtils;
+    private javax.sql.DataSource dataSource1;
+    @Autowired
+    private javax.sql.DataSource dataSource2;
 
 
-    @Pointcut("execution(* com.tu..*.*(..))")
+    @Pointcut("@annotation(com.tu.manager.annotation.DataSource)")
     public void dataSourcePointCut(){}
 
     @Around("dataSourcePointCut()")
     public Object setDataSource(ProceedingJoinPoint pjp) throws Throwable {
-        LocalContainerEntityManagerFactoryBean entityManagerFactory =
-                (LocalContainerEntityManagerFactoryBean) springUtils.getBean("entityManagerFactory");
+//        LocalContainerEntityManagerFactoryBean entityManagerFactory =
+//                (LocalContainerEntityManagerFactoryBean) springUtils.getBean("entityManagerFactory1");
         javax.sql.DataSource dataSource = entityManagerFactory.getDataSource();
 
         MethodSignature signature = (MethodSignature) pjp.getSignature();
@@ -40,14 +45,20 @@ public class DataSourceAspect {
             Object retObject = pjp.proceed();
             return retObject;
         }
-        javax.sql.DataSource tempDataSource =
-                (javax.sql.DataSource) springUtils.getBean(dataSourceAnnotation.name());
-        if (tempDataSource == null){
-            Object retObject = pjp.proceed();
-            return retObject;
-        }
-        entityManagerFactory.setDataSource(tempDataSource);
+//        javax.sql.DataSource tempDataSource =
+//                (javax.sql.DataSource) springUtils.getBean(dataSourceAnnotation.name());
+//        if (tempDataSource == null){
+//            Object retObject = pjp.proceed();
+//            return retObject;
+//        }
         System.out.println("查询前更改数据源:"+dataSourceAnnotation.name());
+        if (dataSourceAnnotation.name().equals("dataSource1")){
+            entityManagerFactory.setDataSource(dataSource1);
+        }
+        if (dataSourceAnnotation.name().equals("dataSource2")){
+            entityManagerFactory.setDataSource(dataSource2);
+        }
+
         Object retObject = pjp.proceed();
         entityManagerFactory.setDataSource(dataSource);
         System.out.println("查询后更改数据源:"+dataSource.toString());
