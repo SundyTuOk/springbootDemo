@@ -1,0 +1,30 @@
+# Tomcat
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+  port: 8089
+  #context-path: /dp-lte
+
+spring:
+#  datasource:
+#        driver-class-name: com.mysql.jdbc.Driver
+#        url: jdbc:mysql://localhost:3306/dpboot?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+#        username: root
+#        password: 123
+  first:
+    datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/cwbx?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+      username: root
+      password: 123
+
+  secondary:
+      datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/dpboot?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+        username: root
+        password: 123
+  jpa:
+    show-sql: true
