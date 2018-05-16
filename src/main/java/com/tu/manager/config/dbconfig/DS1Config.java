@@ -2,10 +2,8 @@ package com.tu.manager.config.dbconfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -21,33 +19,33 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(
-        entityManagerFactoryRef = "entityManagerFactory1",//配置连接工厂 entityManagerFactory
-        transactionManagerRef = "transactionManager1", //配置 事物管理器  transactionManager
-        basePackages = {"com.tu.manager.dao"})//设置dao（repo）所在位置
+//@EnableJpaRepositories(
+//        entityManagerFactoryRef = "entityManagerFactory1",//配置连接工厂 entityManagerFactory
+//        transactionManagerRef = "transactionManager1", //配置 事物管理器  transactionManager
+//        basePackages = {"com.tu.manager.dao"})//设置dao（repo）
+//@EnableJpaRepositories(
+//        entityManagerFactoryRef = "entityManagerFactory",//配置连接工厂 entityManagerFactory
+//        transactionManagerRef = "transactionManager")//设置dao（repo）所在位置
 public class DS1Config {
 
-    @Bean(name = "firstDataSource")
-//    @Qualifier("firstDataSource")
+    @Bean(name = "dataSource1")
     @ConfigurationProperties(prefix = "spring.first.datasource")
-    public DataSource firstDataSource() {
+    public DataSource dataSource1() {
         return DataSourceBuilder.create().build();
     }
 
     @Autowired
-    @Qualifier("firstDataSource")
-    private DataSource primaryDataSource;
+    @Qualifier("dataSource1")
+    private DataSource dataSource1;
 
 
 
     @Primary
-    @Bean(name = "entityManagerPrimary1")
+    @Bean(name = "entityManagerPrimary")
     public EntityManager entityManager() {
         return entityManagerFactory().getObject().createEntityManager();
     }
@@ -62,39 +60,31 @@ public class DS1Config {
 //    }
 
     @Primary
-    @Bean(name = "entityManagerFactory1")
+    @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(primaryDataSource);
+        em.setDataSource(dataSource1);
         em.setPackagesToScan("com.tu.manager.entity");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect","org.hibernate.dialect.MySQLDialect");
-        em.setJpaProperties(properties);
+
+        em.setJpaProperties(getJpaProperties());
 
         return em;
     }
 
 
-
-//    @Autowired
-//    private JpaProperties jpaProperties;
-
-
-
-    private Map<String, String> getVendorProperties(DataSource dataSource) {
-        Map<String,String> map = new HashMap<String,String>();
-        map.put("show-sql","true");
-//        return jpaProperties.getHibernateProperties(dataSource);
-        return  map;
+    private Properties getJpaProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect","org.hibernate.dialect.MySQLDialect");
+        properties.setProperty("hibernate.show_sql","true");
+        properties.setProperty("hibernate.format_sql","true");
+        return  properties;
     }
 
-
-
     @Primary
-    @Bean(name = "transactionManager1")
+    @Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManagerPrimary() {
         return new JpaTransactionManager(entityManagerFactory().getObject());
     }

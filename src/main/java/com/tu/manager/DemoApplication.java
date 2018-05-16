@@ -1,5 +1,6 @@
 package com.tu.manager;
 
+import com.tu.manager.Utils.SpringUtils;
 import com.tu.manager.config.dbconfig.DS1Config;
 import com.tu.manager.config.dbconfig.DS2Config;
 import org.springframework.boot.SpringApplication;
@@ -7,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -17,6 +19,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class DemoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		ConfigurableApplicationContext applicationContext = SpringApplication.run(DemoApplication.class, args);
+		SpringUtils.set(applicationContext);
 	}
 }

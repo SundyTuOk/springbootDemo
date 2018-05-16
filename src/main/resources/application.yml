@@ -16,14 +16,14 @@ spring:
   first:
     datasource:
       driver-class-name: com.mysql.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:3306/cwbx?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+      jdbc-url: jdbc:mysql://localhost:3306/test1?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
       username: root
       password: 123
 
   secondary:
       datasource:
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/dpboot?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+        jdbc-url: jdbc:mysql://localhost:3306/test2?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
         username: root
         password: 123
   jpa:

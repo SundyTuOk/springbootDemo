@@ -1,5 +1,6 @@
 package com.tu.manager.controller;
 
+import com.tu.manager.annotation.DataSource;
 import com.tu.manager.dao.AdminDao;
 import com.tu.manager.dao2.AdminDao2;
 import com.tu.manager.entity.Admin;
@@ -29,6 +30,7 @@ public class Index1 {
 
 
     @RequestMapping(value="/jpa11",method = RequestMethod.GET)
+    @DataSource(name = "dataSource2")
     public String jpa(){
         List<Admin> all = adminDao.findAll();
         List<Admin> all2 = adminDao2.findAll();

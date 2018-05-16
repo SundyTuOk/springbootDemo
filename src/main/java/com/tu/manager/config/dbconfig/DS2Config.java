@@ -26,26 +26,26 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
+//@EnableJpaRepositories(
+//        entityManagerFactoryRef = "entityManagerFactory2",//配置连接工厂 entityManagerFactory
+//        transactionManagerRef = "transactionManager2", //配置 事物管理器  transactionManager
+//        basePackages = {"com.tu.manager.dao2"})//设置dao（repo）所在位置
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "entityManagerFactorySecondary",//配置连接工厂 entityManagerFactory
-        transactionManagerRef = "transactionManagerSecondary", //配置 事物管理器  transactionManager
-        basePackages = {"com.tu.manager.dao2"})//设置dao（repo）所在位置
+        entityManagerFactoryRef = "entityManagerFactory2",//配置连接工厂 entityManagerFactory
+        transactionManagerRef = "transactionManager2")//设置dao（repo）所在位置
 public class DS2Config {
 
-//    @Autowired
-//    private JpaProperties jpaProperties;
-    @Bean(name = "secondaryDataSource")
-    //    @Qualifier("secondaryDataSource")
+    @Bean(name = "dataSource2")
     @ConfigurationProperties(prefix = "spring.secondary.datasource")
-    public DataSource secondaryDataSource() {
+    public DataSource dataSource2() {
     return DataSourceBuilder.create().build();
 }
 
     @Autowired
-    @Qualifier("secondaryDataSource")
-    private DataSource secondaryDS;
+    @Qualifier("dataSource2")
+    private DataSource dataSource2;
 
-    @Bean(name = "entityManagerSecondary")
+    @Bean(name = "entityManager2")
     public EntityManager entityManager() {
         return entityManagerFactory().getObject().createEntityManager();
     }
@@ -67,31 +67,27 @@ public class DS2Config {
 //    }
 
 
-    @Bean(name = "entityManagerFactorySecondary")
+    @Bean(name = "entityManagerFactory2")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(secondaryDS);
+        em.setDataSource(dataSource2);
         em.setPackagesToScan("com.tu.manager.entity");
-
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect","org.hibernate.dialect.MySQLDialect");
-        properties.setProperty("show-sql","true");
-        em.setJpaProperties(properties);
+        em.setJpaProperties(getJpaProperties());
         return em;
     }
 
-    private Map<String, String> getVendorProperties(DataSource dataSource) {
-        Map<String,String> map = new HashMap<String,String>();
-        map.put("show-sql","true");
-//        return jpaProperties.getHibernateProperties(dataSource);
-        return  map;
+    private Properties getJpaProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect","org.hibernate.dialect.MySQLDialect");
+        properties.setProperty("hibernate.show_sql","true");
+        properties.setProperty("hibernate.format_sql","true");
+        return  properties;
     }
 
-    @Bean(name = "transactionManagerSecondary")
+    @Bean(name = "transactionManager2")
     PlatformTransactionManager transactionManagerSecondary() {
-        return new JpaTransactionManager(
-                entityManagerFactory().getObject());
+        return new JpaTransactionManager(entityManagerFactory().getObject());
     }
 }
