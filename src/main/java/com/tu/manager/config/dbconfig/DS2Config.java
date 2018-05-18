@@ -26,24 +26,21 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-//@EnableJpaRepositories(
-//        entityManagerFactoryRef = "entityManagerFactory2",//配置连接工厂 entityManagerFactory
-//        transactionManagerRef = "transactionManager2", //配置 事物管理器  transactionManager
-//        basePackages = {"com.tu.manager.dao2"})//设置dao（repo）所在位置
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactory2",//配置连接工厂 entityManagerFactory
-        transactionManagerRef = "transactionManager2")//设置dao（repo）所在位置
+        transactionManagerRef = "transactionManager2", //配置 事物管理器  transactionManager
+        basePackages = {"com.tu.manager.dao2"})//设置dao（repo）所在位置
+//@EnableJpaRepositories(
+//        entityManagerFactoryRef = "entityManagerFactory2",//配置连接工厂 entityManagerFactory
+//        transactionManagerRef = "transactionManager2")//设置dao（repo）所在位置
 public class DS2Config {
 
-    @Bean(name = "dataSource2")
-    @ConfigurationProperties(prefix = "spring.secondary.datasource")
-    public DataSource dataSource2() {
-    return DataSourceBuilder.create().build();
-}
+//    @Autowired
+//    @Qualifier("secondDataSource")
+//    private DataSource dataSource2;
 
     @Autowired
-    @Qualifier("dataSource2")
-    private DataSource dataSource2;
+    private DynamicDataSource dynamicDataSource;
 
     @Bean(name = "entityManager2")
     public EntityManager entityManager() {
@@ -70,7 +67,7 @@ public class DS2Config {
     @Bean(name = "entityManagerFactory2")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource2);
+        em.setDataSource(dynamicDataSource);
         em.setPackagesToScan("com.tu.manager.entity");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

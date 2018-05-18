@@ -29,14 +29,21 @@ public class Index1 {
     private AdminDao2 adminDao2;
 
 
-    @RequestMapping(value="/jpa11",method = RequestMethod.GET)
-    @DataSource(name = "dataSource2")
-    public String jpa(){
+    @RequestMapping(value="/jpa1",method = RequestMethod.GET)
+    @DataSource(name = "dataSource1")
+    public String jpa1(){
         List<Admin> all = adminDao.findAll();
         List<Admin> all2 = adminDao2.findAll();
-        return all.get(0).getRealname() + all2.get(0).getRealname();
-//        return all2.get(0).getRealname();
-//        return "jpa";
+
+        return all.get(0).getRealname() + "  " + all2.get(0).getRealname();
+    }
+
+    @RequestMapping(value="/jpa2",method = RequestMethod.GET)
+    @DataSource(name = "dataSource2")
+    public String jpa2(){
+        List<Admin> all = adminDao.findAll();
+        List<Admin> all2 = adminDao2.findAll();
+        return all.get(0).getRealname() + "  " + all2.get(0).getRealname();
     }
 
 }

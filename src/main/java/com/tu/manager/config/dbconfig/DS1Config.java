@@ -2,6 +2,7 @@ package com.tu.manager.config.dbconfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -23,26 +24,20 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-//@EnableJpaRepositories(
-//        entityManagerFactoryRef = "entityManagerFactory1",//配置连接工厂 entityManagerFactory
-//        transactionManagerRef = "transactionManager1", //配置 事物管理器  transactionManager
-//        basePackages = {"com.tu.manager.dao"})//设置dao（repo）
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactory1",//配置连接工厂 entityManagerFactory
-        transactionManagerRef = "transactionManager1")//设置dao（repo）所在位置
+        transactionManagerRef = "transactionManager1", //配置 事物管理器  transactionManager
+        basePackages = {"com.tu.manager.dao"})//设置dao（repo）
+//@EnableJpaRepositories(
+//        entityManagerFactoryRef = "entityManagerFactory1",//配置连接工厂 entityManagerFactory
+//        transactionManagerRef = "transactionManager1")//设置dao（repo）所在位置
 public class DS1Config {
 
-    @Bean(name = "dataSource1")
-    @ConfigurationProperties(prefix = "spring.first.datasource")
-    public DataSource dataSource1() {
-        return DataSourceBuilder.create().build();
-    }
-
+//    @Autowired
+//    @Qualifier("firstDataSource")
+//    private DataSource dataSource1;
     @Autowired
-    @Qualifier("dataSource1")
-    private DataSource dataSource1;
-
-
+    private DynamicDataSource dynamicDataSource;
 
     @Primary
     @Bean(name = "entityManagerPrimary1")
@@ -63,7 +58,7 @@ public class DS1Config {
     @Bean(name = "entityManagerFactory1")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource1);
+        em.setDataSource(dynamicDataSource);
         em.setPackagesToScan("com.tu.manager.entity");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -88,4 +83,11 @@ public class DS1Config {
     public PlatformTransactionManager transactionManagerPrimary() {
         return new JpaTransactionManager(entityManagerFactory().getObject());
     }
+
+//    @Autowired
+//    private JpaProperties jpaProperties;
+//
+//    private Map<String, String> getVendorProperties(DataSource dataSource) {
+//        return jpaProperties.getHibernateProperties(dataSource);
+//    }
 }

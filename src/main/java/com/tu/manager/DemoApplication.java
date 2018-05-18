@@ -13,13 +13,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 //@ComponentScan(value = "com.tu")
-@EnableAutoConfiguration
+//@EnableAutoConfiguration
 @SpringBootApplication
 //@EnableJpaRepositories(value = {"com.tu.manager.dao","com.tu.manager.dao2"}) 有毒啊，这句不能要，暂时不知道为甚
 public class DemoApplication {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext applicationContext = SpringApplication.run(DemoApplication.class, args);
-		SpringUtils.set(applicationContext);
+//		SpringUtils.set(applicationContext);
 	}
 }
