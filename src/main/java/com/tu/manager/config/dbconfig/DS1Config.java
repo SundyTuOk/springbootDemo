@@ -27,7 +27,7 @@ import java.util.Properties;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactory1",//配置连接工厂 entityManagerFactory
         transactionManagerRef = "transactionManager1", //配置 事物管理器  transactionManager
-        basePackages = {"com.tu.manager.dao"})//设置dao（repo）
+        basePackages = {"com.tu.manager"})//设置dao（repo）
 //@EnableJpaRepositories(
 //        entityManagerFactoryRef = "entityManagerFactory1",//配置连接工厂 entityManagerFactory
 //        transactionManagerRef = "transactionManager1")//设置dao（repo）所在位置

@@ -24,17 +24,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-@Configuration
-@EnableTransactionManagement
-@EnableJpaRepositories(
-        entityManagerFactoryRef = "entityManagerFactory2",//配置连接工厂 entityManagerFactory
-        transactionManagerRef = "transactionManager2", //配置 事物管理器  transactionManager
-        basePackages = {"com.tu.manager.dao2"})//设置dao（repo）所在位置
+//@Configuration
+//@EnableTransactionManagement
+//@EnableJpaRepositories(
+//        entityManagerFactoryRef = "entityManagerFactory2",//配置连接工厂 entityManagerFactory
+//        transactionManagerRef = "transactionManager2", //配置 事物管理器  transactionManager
+//        basePackages = {"com.tu.manager.dao2"})//设置dao（repo）所在位置
 //@EnableJpaRepositories(
 //        entityManagerFactoryRef = "entityManagerFactory2",//配置连接工厂 entityManagerFactory
 //        transactionManagerRef = "transactionManager2")//设置dao（repo）所在位置
 public class DS2Config {
-
+/*
 //    @Autowired
 //    @Qualifier("secondDataSource")
 //    private DataSource dataSource2;
@@ -86,5 +86,5 @@ public class DS2Config {
     @Bean(name = "transactionManager2")
     PlatformTransactionManager transactionManagerSecondary() {
         return new JpaTransactionManager(entityManagerFactory().getObject());
-    }
+    }*/
 }
