@@ -9,7 +9,7 @@ import java.util.Map;
 public class DynamicDataSource extends AbstractRoutingDataSource {
 
     //用来保存数据源与获取数据源
-    private static final ThreadLocal<String> contextHolder = new ThreadLocal<String>();
+    private static final ThreadLocal<String> contextHolder = new ThreadLocal<>();
 
     public DynamicDataSource(DataSource defaultTargetDataSource, Map<String, DataSource> targetDataSources) {
         super.setDefaultTargetDataSource(defaultTargetDataSource);

@@ -2,13 +2,11 @@ package com.tu.manager.controller;
 
 import com.tu.manager.annotation.DataSource;
 import com.tu.manager.dao.AdminDao;
-import com.tu.manager.entity.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Map;
 
 //@EnableJpaRepositories("com.tu.manager.dao")

@@ -12,11 +12,11 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     druid:
-      dataSource1:  #主库数据源
+      datasource1:  #主库数据源
         url: jdbc:mysql://127.0.0.1:3306/test1?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
         username: root
         password: 123
-      dataSource2:  #从库数据源
+      datasource2:  #从库数据源
         url: jdbc:mysql://127.0.0.1:3306/test2?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
         username: root
         password: 123

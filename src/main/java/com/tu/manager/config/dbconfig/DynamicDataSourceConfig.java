@@ -1,10 +1,9 @@
 package com.tu.manager.config.dbconfig;
 
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -13,16 +12,15 @@ import java.util.Map;
 @Configuration
 public class DynamicDataSourceConfig {
     @Bean
-    @Primary
-    @ConfigurationProperties("spring.datasource.druid.dataSource1")
+    @ConfigurationProperties("spring.datasource.druid.datasource1")
     public DataSource firstDataSource(){
-        return DataSourceBuilder.create().build();
+        return DruidDataSourceBuilder.create().build();
     }
 
     @Bean
-    @ConfigurationProperties("spring.datasource.druid.dataSource2")
+    @ConfigurationProperties("spring.datasource.druid.datasource2")
     public DataSource secondDataSource(){
-        return DataSourceBuilder.create().build();
+        return DruidDataSourceBuilder.create().build();
     }
 
     @Bean
