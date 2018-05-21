@@ -1,9 +1,11 @@
 package com.tu.manager.dao;
 
-import com.tu.manager.entity.Admin;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
-@Repository
-public interface AdminDao extends JpaRepository<Admin,Integer>{
+import java.util.Map;
+
+@Mapper
+public interface AdminDao{
+
+    Map<String,String> find();
 }

@@ -1,7 +1,6 @@
 package com.tu.manager.config.dbconfig;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
-import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -28,6 +27,11 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
     public static String getDataSource() {
+        String dataSource = contextHolder.get();
+        // 如果没有指定数据源，使用默认数据源
+        if (null == dataSource) {
+            DynamicDataSource.setDataSource("dataSource1");
+        }
         return contextHolder.get();
     }
 
