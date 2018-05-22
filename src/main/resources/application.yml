@@ -4,7 +4,7 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 8081
+  port: 8089
   #context-path: /dp-lte
 
 spring:
@@ -45,3 +45,10 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    cache: false
+
