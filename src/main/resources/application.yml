@@ -51,4 +51,6 @@ spring:
     suffix: .html
     encoding: UTF-8
     cache: false
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/
 
