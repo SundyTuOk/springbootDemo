@@ -16,25 +16,26 @@
         {{ message }}
     </div>
 
-<script>
-    var m = new Vue({
-        el:'#app',
-        data: {
-            message:'Hello Worl111!'
-        },
-        created: function () {
-            this.$http({           //调用接口
-                method:'GET',
-                url: "http://127.0.0.1:8089/jpa1" ,
-                params:{
-                    userName : 9,
-                    length : 10
-                }
-            }).then(function(response){  //接口返回数据
-                    this.message = response.data.test;
-            },function(error){
-            })
-        }
-    });
+<script th:inline="javascript">
+
+//    var m = new Vue(
+//        el:'#app',
+//        data: {
+//            message:[[${test}]]
+//        }/*,
+//        mounted: function () {
+//            this.$http({           //调用接口
+//                method:'GET',
+//                url: "http://127.0.0.1:8089/jpa1" ,
+//                params:{
+//                    userName : 9,
+//                    length : 10
+//                }
+//            }).then(function(response){  //接口返回数据
+//                    this.message = response.data.test;
+//            },function(error){
+//            })
+//        }
+//    }*/);
 </script>
 </html>
