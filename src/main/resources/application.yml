@@ -51,5 +51,6 @@ spring:
     suffix: .html
     encoding: UTF-8
     cache: false
-  resources: # 指定静态资源的路径
-    static-locations: classpath:/static/,classpath:/templates/
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/
+
