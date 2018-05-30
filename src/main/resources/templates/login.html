@@ -19,11 +19,11 @@
                 <i class="fa fa-exclamation-triangle"></i> {{errorMsg}}
             </h4>
         </div>
-        <input placeholder="用户名" v-model="username1" type="text">
+        <input placeholder="用户名" v-model="username1" name="username" type="text">
         <hr class="hr15">
-        <input placeholder="密码" v-model="password1" type="password">
+        <input placeholder="密码" v-model="password1" name="password" type="password">
         <hr class="hr15">
-        <input value="登录" style="width: 100%;" type="submit" @click="login"><!--@click="login"-->
+        <input value="登录" style="width: 100%;" type="button" @click="login"><!--@click="login"-->
         <hr class="hr20">
         <!-- 帮助 <a onClick="alert('请联系管理员')">忘记密码</a> -->
     </form>
@@ -49,6 +49,7 @@
 //        },
         methods : {
             login : function(event) {
+                alert("9999999999");
                 if (vm.username1 == '') {
                     vm.error = true;
                     vm.errorMsg = '用户名为空';
@@ -62,11 +63,11 @@
 //                var data = "username=" + vm.username + "&password="
 //                    + vm.password;
                 var data1 = {
-                    username : vm.username,
-                    password : vm.password
+                    username : vm.username1,
+                    password : vm.password1
                 };
                 $.ajax({
-                    type : "POST",
+                    type : "post",
                     url : "loginUrl",
                     data : data1,
                     dataType : "json",
@@ -78,6 +79,7 @@
                         } else {
                             vm.error = true;
                             vm.errorMsg = result.msg;
+                            alert(result.msg);
                         }
                     }
                 });
