@@ -1,4 +1,4 @@
-package com.tu.manager;
+package com.tu.common;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

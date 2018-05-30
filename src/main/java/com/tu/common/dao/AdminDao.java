@@ -1,4 +1,4 @@
-package com.tu.manager.dao;
+package com.tu.common.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 

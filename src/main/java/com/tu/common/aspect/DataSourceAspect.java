@@ -1,7 +1,7 @@
-package com.tu.manager.aspect;
+package com.tu.common.aspect;
 
-import com.tu.manager.annotation.DataSource;
-import com.tu.manager.config.dbconfig.DynamicDataSource;
+import com.tu.common.config.dbconfig.DynamicDataSource;
+import com.tu.common.annotation.DataSource;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 @Configuration
 public class DataSourceAspect implements Ordered {
 
-    @Pointcut("@annotation(com.tu.manager.annotation.DataSource)")
+    @Pointcut("@annotation(com.tu.common.annotation.DataSource)")
     public void dataSourcePointCut(){}
 
     @Around("dataSourcePointCut()")

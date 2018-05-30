@@ -1,4 +1,4 @@
-package com.tu.manager.config.dbconfig;
+package com.tu.common.config.dbconfig;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;

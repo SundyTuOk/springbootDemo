@@ -1,10 +1,14 @@
-package com.tu.manager.config.dbconfig;
+package com.tu.common.config.dbconfig;
 
 import org.apache.ibatis.cache.Cache;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.locks.ReadWriteLock;
 
+/**
+ * 这个数据库缓存暂时未用到，考虑到以后真的碰到数据库压力问题再来
+ * 弄这个
+ */
 @Component
 public class RedisCache implements Cache {
     @Override

@@ -1,4 +1,4 @@
-package com.tu.manager.config.dbconfig;
+package com.tu.common.config.dbconfig;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;

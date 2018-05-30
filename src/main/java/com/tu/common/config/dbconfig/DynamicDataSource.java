@@ -1,4 +1,4 @@
-package com.tu.manager.config.dbconfig;
+package com.tu.common.config.dbconfig;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

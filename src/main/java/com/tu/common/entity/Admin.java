@@ -1,4 +1,4 @@
-package com.tu.manager.entity;
+package com.tu.common.entity;
 
 
 public class Admin {
