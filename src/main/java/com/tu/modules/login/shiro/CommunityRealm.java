@@ -1,12 +1,13 @@
 package com.tu.modules.login.shiro;
 
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.stereotype.Component;
 
-@Component("communityRealm")
 public class CommunityRealm extends AuthorizingRealm {
     /**
      * 授权
@@ -37,4 +38,5 @@ public class CommunityRealm extends AuthorizingRealm {
                 = new SimpleAuthenticationInfo("111","222","communityRealm");
         return simpleAuthenticationInfo;
     }
+
 }

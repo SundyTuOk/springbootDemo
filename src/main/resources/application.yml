@@ -53,4 +53,5 @@ spring:
     cache: false
   resources:
     static-locations: classpath:/templates/,classpath:/static/
-
+  aop:
+    proxy-target-class: true

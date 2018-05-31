@@ -13,17 +13,17 @@
 <div class="login" id="dpLTE" v-cloak>
     <div class="message">DP-BOOT 管理登录</div>
     <div id="darkbannerwrap"></div>
-    <form method="post">
+    <form action="/loginUrl" method="post">
         <div v-if="error" class="alert alert-danger alert-dismissible">
             <h4 style="margin-bottom: 0px;font-size:13px;">
                 <i class="fa fa-exclamation-triangle"></i> {{errorMsg}}
             </h4>
         </div>
-        <input placeholder="用户名" v-model="username1" name="username" type="text">
+        <input placeholder="用户名" v-model="username" name="username" type="text">
         <hr class="hr15">
-        <input placeholder="密码" v-model="password1" name="password" type="password">
+        <input placeholder="密码" v-model="password" name="password" type="password">
         <hr class="hr15">
-        <input value="登录" style="width: 100%;" type="button" @click="login"><!--@click="login"-->
+        <input value="登录" style="width: 100%;" type="submit" ><!--@click="login"-->
         <hr class="hr20">
         <!-- 帮助 <a onClick="alert('请联系管理员')">忘记密码</a> -->
     </form>
@@ -37,8 +37,8 @@
     var vm = new Vue({
         el : '#dpLTE',
         data : {
-            username1 : 'admin',
-            password1 : '1',
+            username : 'admin',
+            password : '1',
             error : false,
             errorMsg : ''
         },
@@ -49,13 +49,12 @@
 //        },
         methods : {
             login : function(event) {
-                alert("9999999999");
-                if (vm.username1 == '') {
+                if (vm.username == '') {
                     vm.error = true;
                     vm.errorMsg = '用户名为空';
                     return false;
                 }
-                if (vm.password1 == '') {
+                if (vm.password == '') {
                     vm.error = true;
                     vm.errorMsg = '密码为空';
                     return false;
@@ -63,8 +62,8 @@
 //                var data = "username=" + vm.username + "&password="
 //                    + vm.password;
                 var data1 = {
-                    username : vm.username1,
-                    password : vm.password1
+                    username : vm.username,
+                    password : vm.password
                 };
                 $.ajax({
                     type : "post",
