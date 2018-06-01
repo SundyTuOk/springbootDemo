@@ -22,7 +22,7 @@ public class ShiroConfig {
         // 如果不设置默认会自动寻找Web工程根目录下的"/login"页面
         shiroFilterFactoryBean.setLoginUrl("/loginUrl");
         // 登录成功后要跳转的链接
-        shiroFilterFactoryBean.setSuccessUrl("/index1.html");
+        shiroFilterFactoryBean.setSuccessUrl("/index.html");
 
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
