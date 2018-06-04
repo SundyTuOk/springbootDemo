@@ -20,14 +20,13 @@ public class LoginController {
      * @return
      */
     @GetMapping("/")
-    public void index(HttpServletResponse rsp) throws IOException {
+    public String index(HttpServletResponse rsp) throws IOException {
         Subject subject = SecurityUtils.getSubject();
         // 没有登陆
         if (subject == null || !subject.isAuthenticated()) {
-            rsp.sendRedirect("login/login.html");
-            return;
+            return "login/login";
         }
-        rsp.sendRedirect("index/index.html");
+        return "redirect:index/index.html";
     }
 
     /**
@@ -61,7 +60,7 @@ public class LoginController {
             return "login/login";
         }
 
-        return "index/index";
+        return "redirect:index/index.html";
     }
 
 }
