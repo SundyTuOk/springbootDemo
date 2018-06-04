@@ -17,14 +17,14 @@ public class LoginController {
      */
     @GetMapping("/")
     public String index() {
-        return "login";
+        return "login/login";
     }
 
     /**
      * 认证
      * @return
      */
-    @RequestMapping("/loginUrl")
+    @RequestMapping("/login")
     public String login(HttpServletRequest request) throws Exception{
         // shiro在认证过程中出现错误后将异常类路径通过request返回
         String exceptionClassName = (String) request
@@ -41,7 +41,7 @@ public class LoginController {
 //                throw new Exception();//最终在异常处理器生成未知错误
             }
         }
-        return "login";
+        return "login/login";
     }
 
 }
