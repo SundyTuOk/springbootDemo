@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.IndexPageMeterDAO">
+	<resultMap type="com.sf.bean.IndexPageMeter" id="indexPageMeterMap">
+         <id column="ID" property="ID"/>
+         <result column="Area_ID" property="areaID"/>
+         <result column="User_ID" property="userID"/>
+         <result column="Meter_ID" property="meterID"/>
+    </resultMap>
+    
+    <resultMap type="com.sf.bean.Meter" id="meterMap">
+         <id column="Meter_ID" property="meterID"/>
+         <result column="Meter_Num" property="meterNum"/>
+         <result column="Meter_Name" property="meterName"/>
+         <result column="Meter_Type" property="meterType"/>
+         <result column="Meter_Changjia" property="meterChangjia"/>
+         <result column="Meter_Time" property="meterTime"/>
+         <result column="Meter_Remark" property="meterRemark"/>
+         <result column="Meter_485Address" property="meter485Address"/>
+         <result column="Beilv" property="beilv"/>
+         <result column="Xiuzheng" property="xiuzheng"/>
+         <result column="Meter_Value1" property="meterValue1"/>
+         <result column="Meter_Value2" property="meterValue2"/>
+         <result column="Meter_Value3" property="meterValue3"/>
+         <result column="Meter_Value4" property="meterValue4"/>
+    </resultMap>
+
+	<insert id="addIndexPageMeter" parameterType="com.sf.bean.IndexPageMeter">
+		insert into IndexPageMeter(Area_ID,User_ID,Meter_ID) values (#{areaID},#{userID},#{meterID})
+	</insert>
+	
+	<select id="getIndexPageMeter" parameterType="com.sf.bean.IndexPageMeter" resultMap="indexPageMeterMap">
+		select * from IndexPageMeter where Area_ID = #{areaID} and User_ID = #{userID} and Meter_ID = #{meterID}
+	</select>
+	
+	<select id="getMeterFromIndexPageMeterID" resultMap="meterMap">
+		select b.* 
+		from IndexPageMeter a inner join Meter b 
+		on a.Meter_ID=b.Meter_ID and a.User_ID = #{userID} and a.Area_ID = #{areaID}
+	</select>
+	
+</mapper>

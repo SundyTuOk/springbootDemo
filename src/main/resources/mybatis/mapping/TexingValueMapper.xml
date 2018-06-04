@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.TexingValueDAO">
+	<resultMap type="com.sf.bean.MeterTexing" id="texingValueMap">
+         <id column="Meter_ID" property="meterID"/>
+         <result column="MeterTexing_ID" property="meterTexingID"/>
+         <result column="TexingValue" property="texingValue"/>
+    </resultMap>
+	
+	<insert id="addTexingValue" parameterType="com.sf.bean.TexingValue">
+		insert into TexingValue values (#{meterID},#{meterTexingID},#{texingValue})
+	</insert>
+	
+	<insert id="updateTexingValue" parameterType="com.sf.bean.TexingValue">
+		update TexingValue set TexingValue=#{texingValue}
+		where Meter_ID = #{meterID} and MeterTexing_ID = #{meterTexingID}
+	</insert>
+	
+	<delete id="deleteTexingValueByMeterID">
+		delete from TexingValue where Meter_ID = #{meterID}
+	</delete>
+	
+	<select id="getMeterTexingByMeterID" resultType="map">
+		select C.MeterTexing_Name,B.TexingValue from (select A.TexingValue,A.MeterTexing_ID 
+		from TexingValue A where A.Meter_ID = #{meterID}) B 
+		LEFT JOIN MeterTexing C ON B.MeterTexing_ID = C.MeterTexing_ID
+	</select>
+</mapper>

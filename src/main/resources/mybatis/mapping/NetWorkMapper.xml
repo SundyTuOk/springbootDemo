@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.NetWorkDAO">
+	<resultMap type="com.sf.bean.NetWork" id="netWorkMap">
+         <id column="NetWork_ID" property="networkID"/>
+         <result column="NetWork_Num" property="networkNum"/>
+         <result column="NetWork_Name" property="networkName"/>
+         <result column="NetWork_Caliber" property="networkCaliber"/>
+         <result column="NetWork_TotalLenght" property="networkTotalLenght"/>
+         <result column="Area_ID" property="areaID"/>
+         <result column="LastMissedTime" property="lastMissedTime"/>
+         <result column="PipeNetworkType" property="pipeNetworkType"/>
+    </resultMap>
+    
+    <resultMap type="com.sf.bean.Meter" id="meterMap">
+         <id column="Meter_ID" property="meterID"/>
+         <result column="Meter_Num" property="meterNum"/>
+         <result column="Meter_Name" property="meterName"/>
+         <result column="Meter_Type" property="meterType"/>
+         <result column="Meter_Changjia" property="meterChangjia"/>
+         <result column="Meter_Time" property="meterTime"/>
+         <result column="Meter_Remark" property="meterRemark"/>
+         <result column="Meter_485Address" property="meter485Address"/>
+         <result column="Beilv" property="beilv"/>
+         <result column="Xiuzheng" property="xiuzheng"/>
+         <result column="Meter_Value1" property="meterValue1"/>
+         <result column="Meter_Value2" property="meterValue2"/>
+         <result column="Meter_Value3" property="meterValue3"/>
+         <result column="Meter_Value4" property="meterValue4"/>
+    </resultMap>
+    
+    <select id="getAllCount" resultType="int">
+		select count(*) from NetWork
+	</select>
+	
+	<select id="getAllNetWork" resultMap="netWorkMap">
+		select count(*) from NetWork
+	</select>
+	
+    <select id="getAllNetWorkByLimitPage" resultType="map">
+		<!-- SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY Meter_ID ASC) AS rowid1,* FROM Meter)t WHERE t.rowid1 &gt;= #{start} AND t.rowid1 &lt;= #{end} -->
+      SELECT * FROM (SELECT ROW_NUMBER() OVER(order by ${sortName} ${sortType}) AS rowid1,
+      	NetWork_ID,
+        NetWork_Num,
+        isnull(NetWork_Name,'') NetWork_Name,
+       (CASE WHEN PipeNetworkType='0' THEN '主干管'  
+         WHEN PipeNetworkType='1' THEN '配水管'
+         WHEN PipeNetworkType='2' THEN '用户连接管'
+         ELSE '' END
+        ) PipeNetworkType ,
+	     isnull(a.Area_Name,'') Area_Name,
+        NetWork_Caliber,
+       NetWork_TotalLenght,
+        ISNULL ( convert(varchar(30),LastMissedTime,120) , '' )LastMissedTime
+       FROM NetWork
+      left join Area a on NetWork.Area_ID=a.Area_ID
+     )t 
+      WHERE t.rowid1 &gt;= #{start} AND t.rowid1 &lt;= #{end} <!-- order by ${sortName} ${sortType} -->
+	</select>
+	
+	<!-- <select id="NetWork_Num" resultMap="netWorkMap">
+		select * from NetWork where NetWork_ID = #{NetWork_Num}
+	</select> -->
+	
+	<select id="selectNetWorkss" resultType="map">
+		  select * from (SELECT ROW_NUMBER() OVER(ORDER BY ${sortName} ASC) AS rowid1,
+		   		  NetWork_Num,
+		          (select Area_Name from Area where Area_ID = B.Area_ID) AS Area_Name,
+		          NetWork_Name,
+		          Area_ID,
+		          PipeNetworkType,
+		          NetWork_Caliber,
+		          NetWork_TotalLenght,
+		          ISNULL ( convert(varchar(30),LastMissedTime,120) , '' )LastMissedTime
+		          from NetWork B
+	      <where>
+			<if test="NetWork_Num != null">
+				or NetWork_Num like '%${NetWork_Num}%'
+			</if>
+			<if test="NetWork_Name != null">
+				or NetWork_Name like '%${NetWork_Name}%'
+			</if>
+			<if test="Area_ID != null">
+				or Area_ID like '%${Area_ID}%'
+			</if>
+			<if test="PipeNetworkType != null">
+				or PipeNetworkType like '%${PipeNetworkType}%'
+			</if>
+			<if test="NetWork_Caliber != null">
+				or NetWork_Caliber like '%${NetWork_Caliber}%'
+			</if>
+			<if test="NetWork_TotalLenght != null">
+				or NetWork_TotalLenght like '%${NetWork_TotalLenght}%'
+			</if>
+		</where> ) t
+		WHERE t.rowid1 &gt;= #{start} AND t.rowid1 &lt;= #{end} order by ${sortName} ${sortType}   
+	</select>
+	
+	 <select id="getAllCounts" resultType="int">
+	  select count(*) from NetWork 
+		<where>
+			<if test="NetWork_Num != null">
+				or NetWork_Num like '%${NetWork_Num}%'
+			</if>
+			<if test="NetWork_Name != null">
+				or NetWork_Name like '%${NetWork_Name}%'
+			</if>
+			<if test="Area_ID != null">
+				or Area_ID like '%${Area_ID}%'
+			</if>
+			<if test="PipeNetworkType != null">
+				or PipeNetworkType like '%${PipeNetworkType}%'
+			</if>
+			<if test="NetWork_Caliber != null">
+				or NetWork_Caliber like '%${NetWork_Caliber}%'
+			</if>
+			<if test="NetWork_TotalLenght != null">
+				or NetWork_TotalLenght like '%${NetWork_TotalLenght}%'
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="getNetWorkByLimiteSize" parameterType="int" resultType="Map">
+		Select TOP ${limiteSize} NetWork_ID ,NetWork_Num ,NetWork_Name FROM NetWork
+	</select>
+	
+	
+ 	<select id="getNetWorkByLimiteSizeAndFuzzy" resultType="Map">
+		Select TOP ${CurrentSelectSize} 
+		NetWork_ID AS ID ,NetWork_Num  AS CODE,NetWork_Name AS NAME FROM NetWork 
+		<where>
+			<if test="SearchCode != null">
+				or NetWork_Num like '%${SearchCode}%'
+			</if>
+			
+			<if test="SearchName != null">
+				or NetWork_Name like '%${SearchName}%'
+			</if>
+			</where>
+	</select>
+	
+	<delete id="deleteNetWorksByNetWorkIDs" parameterType="string">  
+        delete from NetWork where NetWork_ID in
+       <foreach collection="array" item="item" index="no" open="("  
+            separator="," close=")">  
+            #{item}
+            </foreach>  
+    </delete>
+    
+    <insert id="addNetWork" useGeneratedKeys="true" keyProperty="networkID" parameterType="com.sf.bean.NetWork">
+    	insert into NetWork(NetWork_Num, NetWork_Name, NetWork_Caliber, NetWork_TotalLenght, Area_ID, LastMissedTime, PipeNetworkType)
+    	values (#{networkNum},#{networkName},#{networkCaliber},#{networkTotalLenght},#{areaID},#{lastMissedTime},#{pipeNetworkType})
+    </insert>
+    
+	
+	<select id="getNetWorkByNetWorkNum" parameterType="string" resultMap="netWorkMap">
+		select * from NetWork where NetWork_Num = #{netWorkNum}
+	</select>
+	
+	
+	  
+    <select id="getSubordinateRegion" resultType="int">
+		select COUNT (Area_ID) from Area where SuperiorArea_ID =#{Area_ID}
+	</select>
+    
+    <select id="getAreaNetWork" resultType="int">
+		 select COUNT(NetWork_ID) from NetWork where Area_ID=#{Area_ID}
+	</select>
+    
+    <select id="getMeterCountByAreaIDAndMeterType" resultType="int">
+        select count(*) as meterCount from 
+        (select distinct(Meter_ID) as Meter_ID from (select NetWork_ID from NetWork where Area_ID = #{areaID}) A 
+        left join NetWorkMeter B on A.NetWork_ID = B.NetWork_ID) C
+		left join Meter D on C.Meter_ID = D.Meter_ID 
+		<if test="meterType != null">
+			where D.Meter_Type=#{meterType} 
+		</if>
+	</select>
+	
+    <select id="getMeterByAreaIDAndMeterType" resultMap="meterMap">
+        select D.* from 
+        (select distinct(Meter_ID) as Meter_ID from (select NetWork_ID from NetWork where Area_ID = #{areaID}) A 
+        left join NetWorkMeter B on A.NetWork_ID = B.NetWork_ID) C
+		left join Meter D on C.Meter_ID = D.Meter_ID 
+		<if test="meterType != null">
+			where D.Meter_Type=#{meterType} 
+		</if>
+	</select>
+
+	<update id="updateNetWork" parameterType="com.sf.bean.NetWork">
+		update NetWork
+		<set>
+           <!--  <if test="meterID != null">Meter_ID=#{meterID},</if> -->
+            <if test="networkNum != null">NetWork_Num=#{networkNum},</if>
+            <if test="networkName != null">NetWork_Name=#{networkName},</if>
+            <if test="networkCaliber != null">NetWork_Caliber=#{networkCaliber},</if>
+            <if test="networkTotalLenght != null">NetWork_TotalLenght=#{networkTotalLenght},</if>
+            <if test="areaID != null">Area_ID=#{areaID},</if>
+            <if test="lastMissedTime != null">LastMissedTime=#{lastMissedTime},</if>
+            <if test="pipeNetworkType != null">PipeNetworkType=#{pipeNetworkType},</if>
+        </set>
+        where NetWork_Num=#{networkNum}
+	</update>
+	
+	<select id="getNetWorkByNetWorkIDs" parameterType="int" resultMap="netWorkMap">
+		 select * from NetWork where NetWork_ID in
+       <foreach collection="list" item="item" index="no" open="("  
+            separator="," close=")">  
+            #{item}
+            </foreach>  
+	</select>
+	
+	<select id="getNetWorkByAreaID" parameterType="int" resultMap="netWorkMap">
+		 select * from NetWork where Area_ID = #{areaID}
+	</select>
+	
+	
+	<select id="getAllNetWorkList"  resultType="map">
+	select NetWork_ID,NetWork_Num,NetWork_Name from NetWork
+	</select>
+	
+		<select id="getAllPNetWork"  resultType="map">
+	select NetWork_ID,PNetWork_ID from PNetWork 
+	</select>
+	
+	<select id="getNetWorkPNetWork"  resultType="map">
+select PNetWork_ID from PNetWork where NetWork_ID=#{NetWork_ID}
+	</select>
+</mapper>

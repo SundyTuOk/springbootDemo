@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.T_AreaDayDAO">
+	<resultMap type="com.sf.bean.T_AreaDay" id="t_AreaDayMap">
+         <result column="Area_ID" property="areaId"/>
+         <result column="SelectYear" property="selectYear"/>
+         <result column="SelectMonth" property="selectMonth"/>
+         <result column="SelectDay" property="selectDay"/>
+         <result column="ZGrossIn" property="zGrossIn"/>
+         <result column="ZGrossOut" property="zGrossOut"/>
+         <result column="ZGrossMin" property="zGrossMin"/>
+    </resultMap>
+    
+    <select id="getT_AreaDay" resultMap="t_AreaDayMap">
+    	select * from T_AreaDay 
+    	<where>
+    		<if test="areaID != null">
+    			and Area_ID = #{areaID}
+    		</if>
+    		<if test="selectYear != null">
+    			and SelectYear = #{selectYear}
+    		</if>
+    		<if test="selectMonth != null">
+    			and SelectMonth = #{selectMonth}
+    		</if>
+    		<if test="selectDay != null">
+    			and SelectDay = #{selectDay}
+    		</if>
+    	</where>
+    </select>
+    
+    <select id="getSumGrossInAndGrossOut" resultType="map">
+    	select sum(ZGrossIn) as SumIn,sum(ZGrossOut) as SumOut from T_AreaDay 
+    	<where>
+    		<if test="areaID != null">
+    			and Area_ID = #{areaID}
+    		</if>
+    		<if test="selectYear != null">
+    			and SelectYear = #{selectYear}
+    		</if>
+    		<if test="selectMonth != null">
+    			and SelectMonth = #{selectMonth}
+    		</if>
+    		<if test="selectDay != null">
+    			and SelectDay = #{selectDay}
+    		</if>
+    	</where>
+    </select>
+    
+    <select id="getT_AreaDayBetween" resultMap="t_AreaDayMap">
+		select * from T_AreaDay
+		where CONVERT(varchar(10), selectYear)+'-'+CONVERT(varchar(10), SelectMonth)+'-'+CONVERT(varchar(10), SelectDay)
+		between convert(datetime,#{startDateStr}, 20) and convert(datetime,#{endDateStr}, 20)
+		and Area_ID <!-- = #{meterID} -->
+		in  
+        <foreach collection="areaIDList" item="areaID" index="no" open="("  
+            separator="," close=")">  
+            #{areaID}  
+        </foreach>
+	</select>
+
+</mapper>

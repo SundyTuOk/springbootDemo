@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+        <setting name="logImpl" value="LOG4J"/>
+        <setting name="callSettersOnNulls" value="true"/>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+    <mappers>
+		<mapper resource="mybatis/mapping/AreaMapper.xml"/>
+		<mapper resource="mybatis/mapping/MeterMapper.xml"/>
+		<mapper resource="mybatis/mapping/CommonMapper.xml"/>
+		<mapper resource="mybatis/mapping/DictionaryValueMapper.xml"/>
+		<mapper resource="mybatis/mapping/TexingValueMapper.xml"/>
+		<mapper resource="mybatis/mapping/NetWorkMapper.xml"/>
+		<mapper resource="mybatis/mapping/NetWorkMeterMapper.xml"/>
+		<mapper resource="mybatis/mapping/PNetWorkMapper.xml"/>
+		<mapper resource="mybatis/mapping/T_WADayMapper.xml"/>
+		<mapper resource="mybatis/mapping/ZMapper.xml"/>
+		<mapper resource="mybatis/mapping/WTestParameterMapper.xml"/>
+		<mapper resource="mybatis/mapping/IndexPageMeterMapper.xml"/>
+		<mapper resource="mybatis/mapping/T_AreaDayMapper.xml"/>
+		<mapper resource="mybatis/mapping/ErrListMapper.xml"/>
+    </mappers>
+</configuration>

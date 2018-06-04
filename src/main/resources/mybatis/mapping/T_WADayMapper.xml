@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.T_WADayDAO">
+	<resultMap type="com.sf.bean.T_WADay" id="t_WADayMap">
+         <!-- <id column="Area_ID" property="areaId"/> -->
+         <result column="Meter_ID" property="meterID"/>
+         <result column="SelectYear" property="selectYear"/>
+         <result column="SelectMonth" property="selectMonth"/>
+         <result column="SelectDay" property="selectDay"/>
+         <result column="StarReadingDate" property="starReadingDate"/>
+         <result column="EndReadingDate" property="endReadingDate"/>
+         <result column="StarZValueZY" property="starZValueZY"/>
+         <result column="EndZValueZY" property="endZValueZY"/>
+         <result column="ZGross" property="zGross"/>
+         
+    </resultMap>
+
+	<select id="getT_WADayBygetT_WADayByMeterIDAndDate" resultMap="t_WADayMap">
+		select * from T_WADay
+		<where>
+			<if test="selectYear != null">
+				and SelectYear = #{selectYear}
+			</if>
+			<if test="selectMonth != null">
+				and SelectMonth = #{selectMonth}
+			</if>
+			<if test="selectDay != null">
+				and SelectDay = #{selectDay}
+			</if>
+		</where>
+			and Meter_ID = #{meterID}
+	</select>
+	
+	<select id="getT_WADayBetween" resultMap="t_WADayMap">
+		select * from T_WADay
+		where CONVERT(varchar(10), selectYear)+'-'+CONVERT(varchar(10), SelectMonth)+'-'+CONVERT(varchar(10), SelectDay)
+		between convert(datetime,#{startDateStr}, 20) and convert(datetime,#{endDateStr}, 20)
+		and Meter_ID <!-- = #{meterID} -->
+		in  
+        <foreach collection="meterIDList" item="meterID" index="no" open="("  
+            separator="," close=")">  
+            #{meterID}  
+        </foreach>
+	</select>
+</mapper>

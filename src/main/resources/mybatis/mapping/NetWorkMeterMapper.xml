@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.NetWorkMeterDAO">
+	<resultMap type="com.sf.bean.NetWorkMeter" id="netWorkMeterMap">
+         <id column="NetWorkMeter_ID" property="netWorkMeterID"/>
+         <result column="NetWork_ID" property="netWorkID"/>
+         <result column="Meter_ID" property="meterID"/>
+         <result column="MeterStyle" property="meterStyle"/>
+         <result column="OrderIndex" property="orderIndex"/>
+         <result column="Meter_Type" property="meterType"/>
+    </resultMap>
+    
+    <insert id="addNetWorkMeter" parameterType="com.sf.bean.NetWorkMeter">
+		INSERT INTO NetWorkMeter(NetWork_ID,Meter_ID, MeterStyle, OrderIndex,Meter_Type) 
+		VALUES( #{netWorkID}, #{meterID}, #{meterStyle}, #{orderIndex}, #{meterType})
+	</insert>
+  
+  	<delete id="deleteNetWorkMeterByNetWorkMeterIDs" parameterType="int">
+  		delete from NetWorkMeter where NetWorkMeter_ID in 
+		<foreach collection="list" item="arr" index="no" open="("  
+            separator="," close=")">  
+            #{arr}  
+        </foreach>
+  	</delete>
+  	
+  	<select id="getNetWorkMeterListByNetWorkID" parameterType="int" resultType="map">
+  		select A.*,
+		isnull((SELECT Meter_Name from Meter where Meter_ID=A.Meter_ID),'') AS Meter_Name,
+		isnull((SELECT Meter_Num from Meter where Meter_ID=A.Meter_ID),'') AS Meter_Num
+		from NetWorkMeter A where A.NetWork_ID=#{netWorkID} order by A.MeterStyle ASC,A.OrderIndex ASC
+  	</select>
+  	
+  	<update id="updateNetWorkMeter" parameterType="com.sf.bean.NetWorkMeter">
+		update NetWorkMeter
+		<set>
+           <!--  <if test="meterID != null">Meter_ID=#{meterID},</if> -->
+            <if test="netWorkID != null">NetWork_ID=#{netWorkID},</if>
+            <if test="meterID != null">Meter_ID=#{meterID},</if>
+            <if test="meterStyle != null">MeterStyle=#{meterStyle},</if>
+            <if test="orderIndex != null">OrderIndex=#{orderIndex},</if>
+            <if test="meterType != null">Meter_Type=#{meterType},</if>
+        </set>
+        where NetWork_ID=#{netWorkID}
+	</update>
+	
+	<select id="getNetWorkMeterByNetWorkID" parameterType="int" resultMap="netWorkMeterMap">
+  		select A.*,
+		isnull((SELECT Meter_Name from Meter where Meter_ID=A.Meter_ID),'') AS Meter_Name,
+		isnull((SELECT Meter_Num from Meter where Meter_ID=A.Meter_ID),'') AS Meter_Num
+		from NetWorkMeter A where A.NetWork_ID=#{netWorkID}
+  	</select>
+  	
+  	<delete id="deleteNetWorkMeterByNetWorkID" parameterType="int">
+  		delete from NetWorkMeter where NetWork_ID = #{netWorkID}
+  	</delete>
+</mapper>

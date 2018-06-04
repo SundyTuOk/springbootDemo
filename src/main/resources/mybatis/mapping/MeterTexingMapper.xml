@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.login.dao.AmmeterDAO">
+	<resultMap type="com.sf.db.domains.MeterTexing" id="meterTexingMap">
+         <id column="MeterTexing_ID" property="meterTexingID"/>
+         <result column="MeterTexing_Name" property="meterTexingName"/>
+         <result column="MeterTexing_Type" property="meterTexingType"/>
+         <result column="MeterTexing_ShowType" property="meterTexingShowType"/>
+         <result column="MeterTexing_ValueStyle" property="meterTexingValueStyle"/>
+         <result column="MeterTexing_Remark" property="meterTexingRemark"/>
+         
+    </resultMap>
+
+</mapper>

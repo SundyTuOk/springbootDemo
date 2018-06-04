@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.login.dao.AmmeterDAO">
+	<resultMap type="com.sf.db.domains.WMode" id="wModeMap">
+         <id column="WMode_ID" property="wModeid"/>
+         <result column="Area_ID" property="areaid"/>
+         <result column="GenerationTime" property="generationTime"/>
+         <result column="DetectionTime" property="detectionTime"/>
+         <result column="AutomaticDetection" property="automaticDetection"/>
+         <result column="Input_WaterFormula" property="input_WaterFormula"/>
+         <result column="Toll_WaterFormula" property="tollWaterFormula"/>
+         <result column="NoToll_WaterFormula" property="noTollWaterFormula"/>
+         <result column="FREE_WaterFormula" property="FREEWaterFormula"/>
+         <result column="NoFREE_WaterFormula" property="noFREEWaterFormula"/>
+         <result column="NoAuthorized_WaterFormula" property="noAuthorizedWaterFormula"/>
+         <result column="YBError_WaterFormula" property="ybErrorWaterFormula"/>
+         <result column="SPLost_Formula" property="spLostFormula"/>
+         <result column="overflow_Formula" property="overflowFormula"/>
+         <result column="LJLost_Formula" property="ljLost_Formula"/>
+         <result column="GWPressure_Formula" property="gwPressureFormula"/>
+         <result column="MainTube_Length" property="mainTubeLength"/>
+         <result column="GDPipeline_Length" property="gdPipelineLength"/>
+         <result column="YHLJPipeline_Length" property="yhljPipelineLength"/>
+         <result column="NumberOfContacts" property="numberOfContacts"/>
+         <result column="ServiceLevel" property="serviceLevel"/>
+         <result column="WMode_Name" property="wModeName"/>
+         
+    </resultMap>
+
+</mapper>

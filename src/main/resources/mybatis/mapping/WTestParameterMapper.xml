@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.WTestDAO">
+	<resultMap type="com.sf.bean.WTestParameter" id="wTestParameterMap">
+         <id column="WTestParameter_ID" property="wTestParameter_ID"/>
+         <result column="Area_ID" property="area_ID"/>
+         <result column="IsAuto" property="isAuto"/>
+         <result column="Enable" property="enable"/>
+         <result column="MonitoringTime" property="monitoringTime"/>
+         <result column="BJ_leakage" property="bJ_leakage"/>
+         <result column="GY_leakage" property="gY_leakage"/>
+         <result column="OrderIndex" property="orderIndex"/>
+         
+    </resultMap>
+    
+	<select id="getAreasDefaultWTestParameter_ID" resultType="string">
+		select top 1 WTestParameter_ID from  WTestParameter where Area_ID= #{Area_ID} order by IsAuto desc,OrderIndex
+	</select>
+	
+	<select id="getWTestMeter" resultType="map">
+		select WTestParameter_ID,MeterStyle,Meter_ID from WTestMeter where WTestParameter_ID= #{WTestParameter_ID}
+	</select>
+	
+	<select id="getAreaDayGross" resultType="map">
+		select * from T_AreaDay where Area_ID=#{Area_ID} 
+		and SelectYear*10000+SelectMonth*100+SelectDay BETWEEN cast( CONVERT(varchar(8), cast('${StartTime}' as datetime), 112) as int)
+	 	and cast( CONVERT(varchar(8), cast('${EndTime}' as datetime), 112) as int) Order by SelectYear,SelectMonth,SelectDay
+ </select>
+ 
+ 	<select id="getAreaMonthGross" resultType="map">
+		select SelectYear ,SelectMonth,SUM(ZGrossIn )ZGrossIn,SUM(ZGrossOut )ZGrossOut,SUM(ZGrossMin)ZGrossMin from T_AreaDay where Area_ID=#{Area_ID} 
+		and SelectYear*100+SelectMonth BETWEEN cast( CONVERT(varchar(6), cast('${StartTime}' as datetime), 112) as int)
+	 	and cast( CONVERT(varchar(6), cast('${EndTime}' as datetime), 112) as int) 
+	  	group by SelectYear ,SelectMonth
+	   	Order by SelectYear,SelectMonth
+ 	</select>
+ 
+	<select id="getWaterBalanceAnalysis" resultType="map">
+		SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY ${sortName} ${sortType}) AS rowid, 
+		A.WTestParameter_ID,A.Name,B.Area_Name,A.Enable,A.IsAuto,A.MonitoringTime,A.BJ_leakage,A.GY_leakage
+		FROM WTestParameter A LEFT JOIN Area B ON A.Area_ID = B.Area_ID)t 
+		WHERE t.rowid &gt;= #{start} AND t.rowid &lt;= #{end} ORDER BY ${sortName} ${sortType}
+	</select>
+	
+	<select id="getWaterBalanceAnalysisCount" resultType="int">
+		SELECT count(*)
+		FROM WTestParameter A LEFT JOIN Area B ON A.Area_ID = B.Area_ID 
+	</select>
+	
+	<delete id="deleteWTestParameterByWTestParameterID" parameterType="int">
+		delete from WTestParameter where WTestParameter_ID = #{wTestParameterID}
+	</delete>
+	
+	<select id="getWaterBalanceAnalysisFuzzy" resultType="map">
+		<!-- select C.* from (SELECT A.WTestParameter_ID,A.Name,B.Area_Name,A.Enable,A.IsAuto,A.MonitoringTime,A.BJ_leakage,A.GY_leakage
+ 		FROM WTestParameter A LEFT JOIN Area B ON A.Area_ID = B.Area_ID) C
+ 		where C.Name like '${condition}' or C.Area_Name like '${condition}' or C.Enable like '${condition}'
+ 		or C.IsAuto like '${condition}' or C.BJ_leakage like '${condition}' or C.GY_leakage like '${condition}' -->
+ 		
+ 		SELECT * FROM (select ROW_NUMBER() OVER(ORDER BY ${sortName} ${sortType}) AS rowid,C.* from (SELECT A.WTestParameter_ID,A.Name,B.Area_Name,A.Enable,A.IsAuto,A.MonitoringTime,A.BJ_leakage,A.GY_leakage
+ 		FROM WTestParameter A LEFT JOIN Area B ON A.Area_ID = B.Area_ID) C
+ 		where C.Name like '%${condition}%' or C.Area_Name like '%${condition}%' or C.Enable like '%${condition}%'
+ 		or C.IsAuto like '%${condition}%' or C.BJ_leakage like '%${condition}%' or C.GY_leakage like '%${condition}%')t
+ 		WHERE t.rowid &gt;= #{start} AND t.rowid &lt;= #{end} ORDER BY ${sortName} ${sortType}
+	</select>
+	
+	<select id="getWaterBalanceAnalysisFuzzyCount" parameterType="string" resultType="int">
+		<!-- select C.* from (SELECT A.WTestParameter_ID,A.Name,B.Area_Name,A.Enable,A.IsAuto,A.MonitoringTime,A.BJ_leakage,A.GY_leakage
+ 		FROM WTestParameter A LEFT JOIN Area B ON A.Area_ID = B.Area_ID) C
+ 		where C.Name like '${condition}' or C.Area_Name like '${condition}' or C.Enable like '${condition}'
+ 		or C.IsAuto like '${condition}' or C.BJ_leakage like '${condition}' or C.GY_leakage like '${condition}' -->
+ 		
+ 		select count(*) FROM (SELECT A.WTestParameter_ID,A.Name,B.Area_Name,A.Enable,A.IsAuto,A.MonitoringTime,A.BJ_leakage,A.GY_leakage
+ 		FROM WTestParameter A LEFT JOIN Area B ON A.Area_ID = B.Area_ID) C
+ 		where C.Name like '%${condition}%' or C.Area_Name like '%${condition}%' or C.Enable like '%${condition}%'
+ 		or C.IsAuto like '%${condition}%' or C.BJ_leakage like '%${condition}%' or C.GY_leakage like '%${condition}%'
+	</select>
+</mapper>

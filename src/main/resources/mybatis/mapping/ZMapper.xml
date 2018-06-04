@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.ZDAO">
+	<resultMap type="com.sf.bean.ZWA" id="zMap">
+         <id column="Meter_ID" property="meterID"/>
+         <result column="ValueTime" property="valueTime"/>
+         <result column="ZvalueZY" property="zvalueZY"/>
+    </resultMap>
+
+	
+	<select id="getPRByMeterIDBetweenStartAndEnd" resultType="map">
+	<!-- for example : select valuetime,zvaluezy from Z_WA_201804 union all select valuetime,zvaluezy from Z_WA_201805 -->
+		<foreach collection="tableSuffixArr" item="tableSuffix" index="no" 
+            separator=" union all " >
+			select  CONVERT(varchar(16),valuetime,120)valuetime,zvaluezy from Z_PR_${tableSuffix}
+			<where>
+				<if test="meterID != null">
+					and Meter_ID = #{meterID}
+				</if>
+				<if test="start != null">
+					and valuetime &gt;= #{start}
+				</if>
+				<if test="end != null">
+					and valuetime &lt;= #{end}
+				</if>
+			</where>
+        </foreach>
+	</select>
+
+		<select id="getMeterInfoForSend"  resultType="map">
+	select Meter_ID,Meter_Num,Meter_Name,Meter_485Address,Meter_Changjia,isnull(CONVERT(varchar(16),Meter_Time,120),'') Meter_Time,Beilv,Xiuzheng,UpID  from Meter 
+where UpFrom=#{UpFrom} and UpID=#{UpID} and Meter_Type=#{Meter_Type}
+	</select>
+	
+		<update id="EditMeterInfoForSend" >
+		update Meter
+		<set>
+           Meter_Num='${Meter_Num}',
+           Meter_Name='${Meter_Name}',
+           Meter_Changjia='${Meter_Changjia}',
+           Meter_485Address='${Meter_485Address}',
+           Beilv='${Beilv}',
+           Xiuzheng='${Xiuzheng}',
+        </set>
+        where Meter_ID=#{Meter_ID}
+	</update>
+	
+	  <insert id="AddMeterInfoForSend">
+    	insert into Meter(Meter_Num, Meter_Name, Meter_Changjia, Meter_485Address, Beilv, Xiuzheng, Meter_Type,UpFrom,UpID)
+    	values (#{Meter_Num},#{Meter_Name},#{Meter_Changjia},#{Meter_485Address},#{Beilv},#{Xiuzheng},#{Meter_Type},#{UpFrom},#{UpID})
+    </insert>
+    
+      <update id="AddMeterDatasForSend"  statementType="CALLABLE" >
+ 
+ {      call AddMeterDatasForSend (#{Meter_Type}, #{Meter_ID},'${ValueTime}',#{ZvalueZY})}  
+    </update>
+    
+    
+    	<update id="EditMeterValueForSend" >
+		update Meter
+		<set>
+           Meter_Time='${Meter_Time}',
+           Meter_Value1=${Meter_Value1},
+        </set>
+        where Meter_ID=#{Meter_ID} and isnull(Meter_Time,'1900-01-01')&lt;'${Meter_Time}' 
+	</update>
+
+
+  
+  <update id="CreateDataTablePrc" statementType="CALLABLE">  
+   {      call CreateDataTable (#{Meter_Type}, #{tableSuffix})}  
+ </update>  
+</mapper>

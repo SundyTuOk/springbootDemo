@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.MeterDAO">
+	<resultMap type="com.sf.bean.Meter" id="meterMap">
+         <id column="Meter_ID" property="meterID"/>
+         <result column="Meter_Num" property="meterNum"/>
+         <result column="Meter_Name" property="meterName"/>
+         <result column="Meter_Type" property="meterType"/>
+         <result column="Meter_Changjia" property="meterChangjia"/>
+         <result column="Meter_Time" property="meterTime"/>
+         <result column="Meter_Remark" property="meterRemark"/>
+         <result column="Meter_485Address" property="meter485Address"/>
+         <result column="Beilv" property="beilv"/>
+         <result column="Xiuzheng" property="xiuzheng"/>
+         <result column="Meter_Value1" property="meterValue1"/>
+         <result column="Meter_Value2" property="meterValue2"/>
+         <result column="Meter_Value3" property="meterValue3"/>
+         <result column="Meter_Value4" property="meterValue4"/>
+         <result column="UpFrom" property="upFrom"/>
+         <result column="UpID" property="upID"/>
+         
+    </resultMap>
+	<resultMap type="com.sf.bean.ZWA" id="ZWAMap">
+         <id column="Meter_ID" property="meterID"/>
+         <result column="ValueTime" property="valueTime"/>
+         <result column="ZvalueZY" property="zvalueZY"/>
+    </resultMap>
+	<select id="getAllCount" resultType="int">
+		select count(*) from Meter
+	</select>
+	
+	<select id="getAllMeters" resultMap="meterMap">
+		select count(*) from Meter
+	</select>
+	
+	<select id="getAllMetersByLimitPageAndSort" resultMap="meterMap">
+		<!-- SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY Meter_ID ASC) AS rowid,* FROM Meter)t WHERE t.rowid &gt;= #{start} AND t.rowid &lt;= #{end} -->
+		SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY Meter_ID ASC) AS rowid,Meter_ID,
+		Meter_Num,Meter_Name,Meter_485Address,Beilv,Xiuzheng,Meter_Changjia,Meter_Time,
+		Meter_Value1,Meter_Value2,Meter_Value3,Meter_Value4,Meter_Remark,UpFrom,UpID,
+		(CASE WHEN Meter_Type='WA' THEN '水表'  WHEN Meter_Type='AM' THEN '电表' WHEN Meter_Type='FL' THEN '流量计'
+		WHEN Meter_Type='PR' THEN '压力计'
+		WHEN Meter_Type='VALVE' THEN '阀门'
+		WHEN Meter_Type='POOL' THEN '水箱'
+		WHEN Meter_Type='PUMP' THEN '加压泵'  ELSE '' END)Meter_Type 
+		FROM Meter)t WHERE t.rowid &gt;= #{start} AND t.rowid &lt;= #{end} ORDER BY ${sortName} ${sortType}
+		
+	</select>
+	
+	<!-- 主键不能插入，这里没有写主键,插入完成之后根据下面的配置，主键会被设置到对象中 -->
+	<insert id="addMeter" useGeneratedKeys="true" keyProperty="meterID" parameterType="com.sf.bean.Meter" >
+		INSERT INTO Meter(Meter_Num, Meter_Name, Meter_Type, Meter_485Address, Beilv, Xiuzheng, Meter_Changjia, Meter_Time, Meter_Value1, Meter_Value2, Meter_Value3, Meter_Value4, Meter_Remark) 
+	VALUES(#{meterNum}, #{meterName}, #{meterType}, #{meter485Address}, #{beilv}, #{xiuzheng}, #{meterChangjia}, #{meterTime}, #{meterValue1}, #{meterValue2}, #{meterValue3}, #{meterValue4}, #{meterRemark})
+	</insert>
+	
+	<delete id="deleteMeterByMeterNums" parameterType="string">  
+        <!-- delete from Meter where Meter_Num in(7789,7790) -->  
+        <!-- forEach : 用来循环 collection : 用来指定循环的数据的类型 可以填的值有：array,list,map item   
+            : 循环中为每个循环的数据指定一个别名 index : 循环中循环的下标 open : 开始 close : 结束 separator : 数组中元素之间的分隔符 -->  
+        delete from Meter where Meter_Num in  
+        <foreach collection="array" item="arr" index="no" open="("  
+            separator="," close=")">  
+            #{arr}  
+        </foreach>
+        
+        <!-- delete form Meter where Meter_Num = #{meterNum}  -->
+    </delete>
+    
+	<delete id="deleteMeterByMeterIDs" parameterType="string">  
+        <!-- delete from Meter where Meter_ID in(7789,7790) -->  
+        <!-- forEach : 用来循环 collection : 用来指定循环的数据的类型 可以填的值有：array,list,map item   
+            : 循环中为每个循环的数据指定一个别名 index : 循环中循环的下标 open : 开始 close : 结束 separator : 数组中元素之间的分隔符 -->  
+        delete from Meter where Meter_ID in  
+        <foreach collection="array" item="arr" index="no" open="("  
+            separator="," close=")">  
+            #{arr}  
+        </foreach>
+        
+        <!-- delete form Meter where Meter_Num = #{meterNum}  -->
+    </delete>
+    
+    <update id="updateMeter" parameterType="com.sf.bean.Area">
+    	update Meter
+        <set>
+           <!--  <if test="meterID != null">Meter_ID=#{meterID},</if> -->
+            <if test="meterNum != null">Meter_Num=#{meterNum},</if>
+            <if test="meterName != null">Meter_Name=#{meterName},</if>
+            <if test="meterType != null">Meter_Type=#{meterType},</if>
+            <if test="meter485Address != null">Meter_485Address=#{meter485Address},</if>
+            <if test="beilv != null">Beilv=#{beilv},</if>
+            <if test="xiuzheng != null">Xiuzheng=#{xiuzheng},</if>
+            <if test="meterChangjia != null">Meter_Changjia=#{meterChangjia},</if>
+            <if test="meterTime != null">Meter_Time=#{meterTime},</if>
+            <if test="meterValue1 != null">Meter_Value1=#{meterValue1},</if>
+            <if test="meterValue2 != null">Meter_Value2=#{meterValue2},</if>
+            <if test="meterValue3 != null">Meter_Value3=#{meterValue3},</if>
+            <if test="meterValue4 != null">Meter_Value4=#{meterValue4},</if>
+            <if test="meterRemark != null">Meter_Remark=#{meterRemark},</if>
+        </set>
+        where Meter_Num=#{meterNum}
+    </update>
+    
+    <select id="getMeterByMeterNum" parameterType="string" resultMap="meterMap">
+    	<!-- 这里是防止测试数据库里面有重复的meterNum，才加的 top 1,其实正式数据库可以不加 -->
+		select top 1 * from Meter where Meter_Num = #{meterNum}
+	</select>
+	
+	<select id="getColums" resultType="string">
+		SELECT Name FROM SysColumns WHERE id=Object_Id('Meter')
+	</select>
+	
+	<select id="getMetersByWhereLimit" resultMap="meterMap">
+		SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY Meter_ID ASC) AS rowid,Meter_ID,Meter_Num,
+		Meter_Name,Meter_485Address,Beilv,Xiuzheng,Meter_Changjia,Meter_Time,Meter_Value1,Meter_Value2,
+		Meter_Value3,Meter_Value4,Meter_Remark,UpFrom,UpID,
+		(CASE WHEN Meter_Type='WA' THEN '水表'  WHEN Meter_Type='AM' THEN '电表' WHEN Meter_Type='FL' THEN '流量计'
+		WHEN Meter_Type='PR' THEN '压力计'
+		WHEN Meter_Type='VALVE' THEN '阀门'
+		WHEN Meter_Type='POOL' THEN '水箱'
+		WHEN Meter_Type='PUMP' THEN '加压泵'  ELSE '' END)Meter_Type FROM Meter where (${where}))t WHERE t.rowid &gt;= #{start} AND t.rowid &lt;= #{end} order by ${sortName} ${sortType}
+	</select>
+	
+	<select id="getAllCountByWhere" resultType="int">
+		SELECT count(*) FROM (SELECT ROW_NUMBER() OVER(ORDER BY Meter_ID ASC) AS rowid,
+		Meter_ID,Meter_Num,Meter_Name,Meter_485Address,Beilv,Xiuzheng,Meter_Changjia,
+		Meter_Time,Meter_Value1,Meter_Value2,Meter_Value3,Meter_Value4,Meter_Remark,UpFrom,UpID,
+		(CASE WHEN Meter_Type='WA' THEN '水表'  WHEN Meter_Type='AM' THEN '电表' WHEN Meter_Type='FL' THEN '流量计'
+		WHEN Meter_Type='PR' THEN '压力计'
+		WHEN Meter_Type='VALVE' THEN '阀门'
+		WHEN Meter_Type='POOL' THEN '水箱'
+		WHEN Meter_Type='PUMP' THEN '加压泵'  ELSE '' END)Meter_Type FROM Meter where ${where})t
+	</select>
+	
+	<select id="getMeterIDByMeterNums" parameterType="string" resultType="int">  
+        <!-- delete from Meter where Meter_Num in(7789,7790) -->  
+        <!-- forEach : 用来循环 collection : 用来指定循环的数据的类型 可以填的值有：array,list,map item   
+            : 循环中为每个循环的数据指定一个别名 index : 循环中循环的下标 open : 开始 close : 结束 separator : 数组中元素之间的分隔符 -->  
+        SELECT Meter_ID from Meter where Meter_Num IN   
+        <foreach collection="array" item="arr" index="no" open="("  
+            separator="," close=")">  
+            #{arr}  
+        </foreach>
+        
+        <!-- delete form Meter where Meter_Num = #{meterNum}  -->
+    </select>
+    
+	<select id="getMeterByMeterTypeWithLimitSizeAndFuzzy" resultMap="meterMap">
+		Select TOP ${limitSize} * FROM Meter where Meter_Type = #{meterType}
+		<if test="meterNum != null or meterName != null">
+			and 
+			(<trim prefix="" prefixOverrides="AND |OR ">
+				<if test="meterNum != null">
+					OR Meter_Num like '%${meterNum}%'
+				</if>
+				<if test="meterName != null">
+					or Meter_Name like '%${meterName}%'
+				</if>
+			</trim>)
+		</if>
+		<!-- and (Meter_Num like '%${meterNum}%' or Meter_Name like '%${meterName}%') -->
+	</select>
+	
+	<select id="getMeterWithLimitSizeAndFuzzy" resultMap="meterMap">
+		Select TOP ${limitSize} * FROM Meter
+		<where>
+			<if test="meterNum != null">
+				or Meter_Num like '%${meterNum}%'
+			</if>
+			<if test="meterName != null">
+				or Meter_Name like '%${meterName}%'
+			</if>
+		</where> 
+	</select>
+	
+	<select id="getMeterByMeterID" parameterType="int" resultMap="meterMap">
+		select * from Meter where Meter_ID = #{meterID}
+	</select>
+	
+	<select id="getMeterByMeterIDs" parameterType="int" resultMap="meterMap">
+		select * from Meter where Meter_ID in 
+		<foreach collection="list" item="arr" index="no" open="("  
+            separator="," close=")">  
+            #{arr}  
+        </foreach>
+	</select>
+	
+	<select id="getMeterByMeterType" parameterType="string" resultMap="meterMap">
+		select * from Meter where Meter_Type = #{meterType}
+	</select>
+		 <select id="getWAMeterData" resultMap="ZWAMap">
+		 <foreach collection="MonthArry" item="arr" index="no"  
+            separator=" union all " >  
+            select  * from Z_WA_${arr} where Meter_ID=#{Meter_ID} and ValueTime &gt;='${StartTime}' and ValueTime &lt;='${EndTime}'
+        </foreach>
+	</select> 
+	
+		<select id="getWAMeterDataH" resultType="map">
+			  select datepart(YYYY,a.readdttm) D_Y, datepart(MM,a.readdttm) D_M, datepart(dd,a.readdttm) D_D, datepart(hh,a.readdttm) D_H,a.value from ( 
+select readdttm,max(zvaluezy) value from (  
+		select  case datepart(minute,valuetime)
+				  when 0 then dateadd(hour,datepart(hour,valuetime),convert(datetime,convert(varchar(10),valuetime,120)))
+				  else dateadd(hour,datepart(hour,valuetime)+1,convert(datetime,convert(varchar(10),valuetime,120)))
+				  end readdttm,ZvalueZY  from(
+		 <foreach collection="MonthArry" item="arr" index="no"  
+            separator=" union all " >  
+            select  * from Z_WA_${arr} where Meter_ID=#{Meter_ID} and ValueTime &gt;='${StartTime}' and ValueTime &lt;='${EndTime}'
+        </foreach>
+   )T )t group by readdttm
+    )a
+	</select> 
+			<select id="getT_DayAm" resultType="map">
+	select EndReadingDate,EndZValueZY from T_WADay where Meter_ID=#{Meter_ID}
+    	and SelectYear=dateName(yyyy,dateadd(day,-1,'${StartTime}')) 
+    	and SelectMonth=dateName(mm,dateadd(day,-1,'${StartTime}')) 
+    	and SelectDay=dateName(dd,dateadd(day,-1,'${StartTime}')) ;
+	</select> 
+	
+	<select id="getVALUENetWork" resultType="map">
+	select NetWork_ID,MeterStyle from NetWorkMeter where Meter_Type='VALVE'  and Meter_ID=#{Meter_ID}
+	</select> 
+	
+</mapper>

@@ -10,16 +10,14 @@ server:
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.jdbc.Driver
-    druid:
-      datasource1:  #主库数据源
-        url: jdbc:mysql://127.0.0.1:3306/test1?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-        username: root
-        password: 123
-      datasource2:  #从库数据源
-        url: jdbc:mysql://127.0.0.1:3306/test2?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-        username: root
-        password: 123
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://192.168.7.157;DatabaseName=WaterBalance
+    username: sa
+    password: sa-123456
+#      datasource2:  #从库数据源
+#        url: jdbc:mysql://127.0.0.1:3306/test2?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+#        username: root
+#        password: 123
     initial-size: 10
     max-active: 100
     min-idle: 10
@@ -46,12 +44,19 @@ spring:
         config:
           multi-statement-allow: true
 
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    encoding: UTF-8
-    cache: false
-  resources:
-    static-locations: classpath:/templates/,classpath:/static/
-  aop:
-    proxy-target-class: true
+#  thymeleaf:
+#    prefix: classpath:/templates/
+#    suffix: .html
+#    encoding: UTF-8
+#    cache: false
+#  resources:
+#    static-locations: classpath:/templates/,classpath:/static/
+#  aop:
+#    proxy-target-class: true
+
+mybatis:
+  config-location: classpath:/mybatis/mybatisConfig.xml
+#  mapping-locations: classpath:/mapping/AreaMapper.xml,classpath:/mapping/MeterMapper.xml,classpath:/mapping/DictionaryValueMapper.xml,classpath:/mapping/TexingValueMapper.xml,classpath:/mapping/NetWorkMapper.xml,classpath:/mapping/NetWorkMeterMapper.xml,classpath:/mapping/PNetWorkMapper.xml,classpath:/mapping/T_WADayMapper.xml,classpath:/mapping/ZMapper.xml,classpath:/mapping/WTestParameterMapper.xml,classpath:/mapping/IndexPageMeterMapper.xml,classpath:/mapping/T_AreaDayMapper.xml,classpath:/mapping/ErrListMapper.xml
+#  configuration:
+#    call-setters-on-nulls: true
+#    cache-enabled: true

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.CommonDAO">
+	
+	<select id="selectTableByWhere" parameterType="string" resultType="map">
+		select * from ${tableName} where ${where}
+	</select>
+	
+	<select id="selectColumsByTableName" parameterType="string" resultType="string">
+		SELECT Name FROM SysColumns WHERE id=Object_Id(#{tableName})
+	</select>
+</mapper>

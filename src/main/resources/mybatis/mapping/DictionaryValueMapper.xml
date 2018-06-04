@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.DictionaryValueDAO">
+	<resultMap type="com.sf.bean.DictionaryValue" id="dictionaryValueMap">
+         <id column="DictionaryValue_ID" property="dictionaryValueID"/>
+         <result column="Dictionary_ID" property="dictionaryID"/>
+         <result column="DictionaryValue_Num" property="dictionaryValueNum"/>
+         <result column="DictionaryValue_Value" property="dictionaryValueValue"/>
+         
+    </resultMap>
+    
+    <select id="getDictionaryValueByDictionaryID" parameterType="int" resultMap="dictionaryValueMap">
+              select * from DictionaryValue where Dictionary_ID=#{dictionaryID};
+    </select>
+    
+    <select id="getTypeAndValueByDictionaryValueNum" parameterType="string" resultType="map">
+	    select A.MeterTexing_ShowType,A.MeterTexing_ID,A.MeterTexing_Name,B.DictionaryValue_ID,B.DictionaryValue_Num,B.DictionaryValue_Value
+from MeterTexing A INNER JOIN DictionaryValue B ON A.MeterTexing_ValueStyle = B.Dictionary_ID AND A.MeterTexing_Type = #{dictionaryValueNum}
+    </select>
+    
+    <select id="getTypeAndValueByDictionaryValueNumAndMeterID" resultType="map">
+    	select A.MeterTexing_ShowType,A.MeterTexing_ID,A.MeterTexing_Name,B.DictionaryValue_ID,B.DictionaryValue_Num,B.DictionaryValue_Value,C.TexingValue
+		from MeterTexing A INNER JOIN DictionaryValue B ON A.MeterTexing_ValueStyle = B.Dictionary_ID AND A.MeterTexing_Type='WA' 
+		left join TexingValue C on A.MeterTexing_ID=C.MeterTexing_ID and C.Meter_ID=#{meterID}
+	    <!-- SELECT A.MeterTexing_ShowType,A.MeterTexing_ID,C.TexingValue,B.DictionaryValue_Num,B.DictionaryValue_Value,A.MeterTexing_Name from MeterTexing A LEFT JOIN DictionaryValue B
+ON A.MeterTexing_ValueStyle = B.Dictionary_ID LEFT JOIN TexingValue C ON A.MeterTexing_ID=C.MeterTexing_ID where A.MeterTexing_Type = #{dictionaryValueNum} and C.Meter_ID = #{meterID} -->
+    </select>
+    
+    <select id="getDictionaryValueByDictionaryValueNum" parameterType="int" resultMap="dictionaryValueMap">
+              select * from DictionaryValue where DictionaryValue_Num=#{dictionaryValueNum};
+    </select>
+
+</mapper>

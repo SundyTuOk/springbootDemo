@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.login.dao.AmmeterDAO">
+	<resultMap type="com.sf.db.domains.WTestRecord" id="wTestRecordMap">
+         <id column="WTestRecord_ID" property="wTestRecordid"/>
+         <result column="WTestParameter_ID" property="wTestParameterid"/>
+         <result column="WMode_ID" property="wModeid"/>
+         <result column="RSMeter_IDList" property="rsMeterIDList"/>
+         <result column="CSMeter_IDList" property="csMeterIDList"/>
+         <result column="TestTime" property="testTime"/>
+         <result column="Total_WaterQuantity" property="totalWaterQuantity"/>
+         <result column="User_WaterQuantity" property="userWaterQuantity"/>
+         <result column="TotalLeakage" property="totalLeakage"/>
+         <result column="BJ_Leakage" property="bjLeakage"/>
+         <result column="TubeLeakage" property="tubeLeakage"/>
+         <result column="GY_Value" property="gyValue"/>
+         
+    </resultMap>
+
+</mapper>

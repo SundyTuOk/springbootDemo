@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.dao.PNetWorkDAO">
+	<resultMap type="com.sf.bean.PNetWork" id="pNetWorkMap">
+         <id column="NetWork_ID" property="netWorkID"/>
+         <id column="PNetWork_ID" property="pNetWorkID"/>
+         <result column="WA_Meter_ID" property="WAMeterID"/>
+         <result column="FL_Meter_ID" property="FLMeterID"/>
+         <result column="PR_Meter_ID" property="PRMeterID"/>
+         <result column="Valve_Meter_ID" property="valveMeterID"/>
+    </resultMap>
+	
+	<insert id="addPNetWork" parameterType="com.sf.bean.PNetWork">
+		insert into PNetWork(NetWork_ID, PNetWork_ID, WA_Meter_ID, FL_Meter_ID, PR_Meter_ID, Valve_Meter_ID)
+		values(#{netWorkID},#{pNetWorkID},#{WAMeterID},#{FLMeterID},#{PRMeterID},#{valveMeterID})
+	</insert>
+	
+	<delete id="deletePNetWorkByNetWorkIDAndPNetWorkID">
+		delete from PNetWork where NetWork_ID = #{netWorkID} and PNetWork_ID = #{pNetWorkID}
+	</delete>
+	
+	<select id="getPNetWorkByNetWorkID" parameterType="int" resultType="map">
+		select A.*,
+		isnull((SELECT NetWork_Name from NetWork where NetWork_ID=A.PNetWork_ID),'') AS PNetWork_Name,
+		isnull((SELECT Meter_Name from Meter where Meter_ID=A.WA_Meter_ID),'') AS WA_Meter_Name,
+		isnull((SELECT Meter_Name from Meter where Meter_ID=A.FL_Meter_ID),'') AS FL_Meter_Name,
+		isnull((SELECT Meter_Name from Meter where Meter_ID=A.PR_Meter_ID),'') AS PR_Meter_Name,
+		isnull((SELECT Meter_Name from Meter where Meter_ID=A.Valve_Meter_ID),'') AS Valve_Meter_Name
+		from PNetWork A where  A.NetWork_ID=#{netWorkID}
+	</select>
+	
+	<delete id="deletePNetWorkByID" parameterType="string">
+		delete from PNetWork where NetWork_ID = #{id} or PNetWork_ID = #{id}
+	</delete>
+	
+	<delete id="deletePNetWorkByIDs" parameterType="int">
+		delete from PNetWork where NetWork_ID in
+		<foreach collection="list" item="arr" index="no" open="("  
+            separator="," close=")">  
+            #{arr}  
+        </foreach>
+		or PNetWork_ID in 
+		<foreach collection="list" item="arr" index="no" open="("  
+            separator="," close=")">  
+            #{arr}  
+        </foreach>
+	</delete>
+	
+	<update id="updatePNetWork" parameterType="com.sf.bean.PNetWork">
+		update PNetWork
+		<set>
+			<if test="netWorkID != null">NetWork_ID = #{netWorkID},</if>
+			<if test="pNetWorkID != null">PNetWork_ID = #{pNetWorkID},</if>
+			<if test="WAMeterID != null">WA_Meter_ID = #{WAMeterID},</if>
+			<if test="FLMeterID != null">FL_Meter_ID = #{FLMeterID},</if>
+			<if test="PRMeterID != null">PR_Meter_ID = #{PRMeterID},</if>
+			<if test="valveMeterID != null">Valve_Meter_ID = #{valveMeterID},</if>
+		</set>
+		where NetWork_ID = #{netWorkID} and PNetWork_ID = #{pNetWorkID}
+	</update>
+	
+	<select id="getPNetWorkByPNetWorkID" parameterType="int" resultMap="pNetWorkMap">
+		select * from PNetWork where PNetWork_ID = #{pNetWorkID}
+	</select>
+	
+	<delete id="deletePNetWorkByNetWorID" parameterType="int">
+		delete from PNetWork where NetWork_ID = #{netWorkID}
+	</delete>
+</mapper>

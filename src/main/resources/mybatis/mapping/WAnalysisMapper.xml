@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.login.dao.AmmeterDAO">
+	<resultMap type="com.sf.db.domains.Area" id="areaMap">
+         <id column="WAnalysis_ID" property="wAnalysisId"/>
+         <result column="EvaluationTime" property="evaluationTime"/>
+         <result column="WMode_ID" property="wModeID"/>
+         <result column="Input_WaterVolume" property="inputWaterVolume"/>
+         <result column="Toll_WaterVolume" property="tollWaterVolume"/>
+         <result column="NoToll_WaterVolume" property="noTollWaterVolume"/>
+         <result column="FREE_WaterVolume" property="FREEWaterVolume"/>
+         <result column="NoFREE_WaterVolume" property=noFREEWaterVolume/>
+         <result column="NoAuthorized_WaterVolume" property=noAuthorizedWaterVolume/>
+         <result column="YBError_WaterVolume" property=ybErrorWaterVolume/>
+         <result column="SPLost" property=sPLost/>
+         <result column="XSCOverflow" property=xcCOverflow/>
+         <result column="YHLJ_Lost" property=yhljLost/>
+         <result column="GW_Pressure" property=gwPressure/>
+         <result column="ZGG_Length" property=zggLength/>
+         <result column="PSGD_Length" property=psgdLength/>
+         <result column="YHLJG_Length" property=yhljgLength/>
+         <result column="NumberOfContacts" property=numberOfContacts/>
+         <result column="ServiceLevel" property=serviceLevel/>
+         <result column="LeakageRate" property=leakageRate/>
+         <result column="CX_Difference" property=cxDifference/>
+         <result column="DWGC_Lost" property=dwgcLost/>
+         <result column="JD_Leakage" property=jdLeakage/>
+         
+    </resultMap>
+
+</mapper>
