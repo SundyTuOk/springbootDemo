@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 @MapperScan(basePackages = MyBatisDataSourceConfig.MASTER_PACKAGE, sqlSessionFactoryRef = "masterSqlSessionFactory")
 public class MyBatisDataSourceConfig {
     //扫描从数据源mapper接口所在的包
-    static final String MASTER_PACKAGE = "com.tu.manager.dao";
+    static final String MASTER_PACKAGE = "com.tu.common.dao";
     //扫描从数据源xml文件
     static final String MAPPER_LOCATION = "classpath:mapper/*.xml";
 

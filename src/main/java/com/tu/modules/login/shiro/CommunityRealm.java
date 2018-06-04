@@ -44,11 +44,6 @@ public class CommunityRealm extends AuthorizingRealm {
             return null;
         }
 
-//        String password = new String(usernamePasswordToken.getPassword());
-//        System.out.println("username-------------------->"+username);
-//        System.out.println("username-------------------->"+username);
-//        System.out.println("username-------------------->"+username);
-
         SimpleAuthenticationInfo simpleAuthenticationInfo
                 = new SimpleAuthenticationInfo(user,user.getPassword(),"communityRealm");
         return simpleAuthenticationInfo;
