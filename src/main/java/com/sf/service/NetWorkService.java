@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ import com.sf.dao.PNetWorkDAO;
 @Lazy(value = true)
 public class NetWorkService {
 	
-	private Logger logger = Logger.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private Transaction transaction;
@@ -92,7 +91,7 @@ public class NetWorkService {
 			transaction.commit(status);
 			return true;
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("删除管网失败...");
 			transaction.rollback(status);
 			return false;

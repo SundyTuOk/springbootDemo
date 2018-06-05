@@ -1,36 +1,29 @@
 package com.sf.controller.systeminfo;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.sf.bean.Area;
+import com.sf.commonbase.Transaction;
+import com.sf.service.AreaService;
+import com.sf.utils.Constant;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sf.bean.Area;
-import com.sf.commonbase.Transaction;
-import com.sf.dao.AreaDAO;
-import com.sf.service.AreaService;
-import com.sf.utils.Constant;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/area")
 public class AreaControllor {
 	
-	private Logger logger = Logger.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Resource(name="areaService")
 	private AreaService areaService;
@@ -83,7 +76,7 @@ public class AreaControllor {
 				areaIDInt = Integer.parseInt(areaID);
 			}
 		}catch(NumberFormatException e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("addArea传入错误SuperiorAreaID->"+SuperiorAreaID);
 			retJson.put(Constant.RESULT, Constant.FAILED);
 			retJson.put(Constant.EFFECT_COUNT, effectCount);
@@ -126,7 +119,7 @@ public class AreaControllor {
 			tempArea.setAreaList(superArea.getAreaList() +","+ area.getAreaID());
 			updateStatus = areaService.updateArea(tempArea);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("添加区块失败");
 			retJson.put(Constant.RESULT, Constant.FAILED);
 			retJson.put(Constant.EFFECT_COUNT, 0);
@@ -143,7 +136,7 @@ public class AreaControllor {
 		return retJson.toString();
 	}
 	
-	@RequestMapping(value="/deleteArea",method=RequestMethod.POST) 
+	@RequestMapping(value="/deleteArea",method=RequestMethod.POST)
 	@ResponseBody
 	public String deleteAreas(HttpServletRequest req){
 		JSONObject retJson = new JSONObject();
@@ -159,7 +152,7 @@ public class AreaControllor {
 				return retJson.toString();
 			}
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("删除areaNum->"+areaNum+"失败");
 			txManager.rollback(status);
 			retJson.put(Constant.RESULT, Constant.FAILED);

@@ -6,9 +6,10 @@ import java.util.Map;
 import com.sf.bean.TexingValue;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
 
 @Mapper
-@Lazy(value = true)
+@Repository
 public interface TexingValueDAO {
 	
 	/**

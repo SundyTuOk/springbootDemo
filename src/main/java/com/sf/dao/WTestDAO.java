@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sf.bean.Area;
 @Mapper
-@Lazy(value = true)
+@Repository
 public interface WTestDAO {
 	
 

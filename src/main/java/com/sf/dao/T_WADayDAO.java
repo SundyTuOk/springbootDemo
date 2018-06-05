@@ -7,9 +7,10 @@ import org.apache.ibatis.annotations.Param;
 
 import com.sf.bean.T_WADay;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
 
 @Mapper
-@Lazy(value = true)
+@Repository
 public interface T_WADayDAO {
 	
 	/**

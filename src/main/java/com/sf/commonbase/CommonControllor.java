@@ -1,7 +1,5 @@
 package com.sf.commonbase;
 
-import org.apache.log4j.Logger;
-
 /**
  * 本类提供一些公用的基本接口
  * @author tuzhaoliang
@@ -11,8 +9,7 @@ import org.apache.log4j.Logger;
 //@RequestMapping("/common")
 public class CommonControllor {
 	
-	private Logger logger = Logger.getLogger(getClass());
-	
+
 //	@Resource(name="commonDAO")
 //	private CommonDAO commonDAO;
 //
@@ -35,7 +32,7 @@ public class CommonControllor {
 //			sb = sb.delete(sb.length() - or.length(), sb.length());
 //			selectTableByWhere = commonDAO.selectTableByWhere(tableName, sb.toString());
 //		}catch(Exception e){
-//			logger.error(e);
+//			logger.error(e.toString());
 //			logger.info("select * from "+tableName+" "+sb+" 失败，返回空详细信息json数据体");
 //			JSONObject json = new JSONObject();
 //			json.put(Constant.JSON_COUNT, 0);

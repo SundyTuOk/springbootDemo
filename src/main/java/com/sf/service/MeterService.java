@@ -1,21 +1,5 @@
 package com.sf.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionStatus;
-
-import com.sf.bean.Area;
 import com.sf.bean.DictionaryValue;
 import com.sf.bean.Meter;
 import com.sf.bean.TexingValue;
@@ -23,13 +7,22 @@ import com.sf.commonbase.Transaction;
 import com.sf.dao.DictionaryValueDAO;
 import com.sf.dao.MeterDAO;
 import com.sf.dao.TexingValueDAO;
-import com.sf.utils.Constant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service("meterService")
 @Lazy(value = true)
 public class MeterService {
 	
-	private Logger logger = Logger.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private MeterDAO meterDAO;
@@ -64,7 +57,7 @@ public class MeterService {
 			txManager.commit(status);
 			return true;
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("插入Meter失败");
 			txManager.rollback(status);
 			return false;
@@ -91,7 +84,7 @@ public class MeterService {
 			txManager.commit(status);
 			return true;
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("插入Meter失败");
 			txManager.rollback(status);
 			return false;
@@ -119,7 +112,7 @@ public class MeterService {
 	}
 	/**
 	 * 根据meterNum删除设备
-	 * @param meterNum
+	 * @param meterIDs
 	 */
 	public boolean deleteMeterByMeterIDs(String[] meterIDs) {
 		// 删除影响行数
@@ -134,7 +127,7 @@ public class MeterService {
 			}
 			txManager.commit(status);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("删除设备Meter出错meterIDs->"+meterIDs);
 			txManager.rollback(status);
 			return false;
@@ -197,7 +190,7 @@ public class MeterService {
 		try{
 			texingValueDAO.addTexingValue(texingValue);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("插入TexingValue失败");
 			return false;
 		}

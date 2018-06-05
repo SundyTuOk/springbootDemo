@@ -1,50 +1,33 @@
 package com.sf.controller.index;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.sf.bean.*;
+import com.sf.controller.Gross.Gross;
+import com.sf.dao.MeterDAO;
+import com.sf.service.IndexService;
+import com.sf.utils.CommonUtils;
+import com.sf.utils.Constant;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sf.bean.Area;
-import com.sf.bean.ErrList;
-import com.sf.bean.IndexPageMeter;
-import com.sf.bean.Meter;
-import com.sf.bean.NetWork;
-import com.sf.bean.NetWorkMeter;
-import com.sf.bean.PNetWork;
-import com.sf.bean.T_AreaDay;
-import com.sf.bean.T_WADay;
-import com.sf.controller.Gross.Gross;
-import com.sf.dao.MeterDAO;
-import com.sf.service.IndexService;
-import com.sf.utils.CommonUtils;
-import com.sf.utils.Constant;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/index")
 public class Index {
 	
-private Logger logger = Logger.getLogger(getClass());
+private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private MeterDAO meterDAO;
@@ -132,7 +115,7 @@ private Logger logger = Logger.getLogger(getClass());
 		try {
 			Area_ID = Integer.parseInt(Area_IDs);
 		} catch (NumberFormatException e) {
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入地区ID参数不为数字，Area_ID->" + Area_ID+"，非法参数!");
 			json.put(Constant.JSON_ROWS, jsonArray);
 			json.put(Constant.JSON_COUNT, 0);
@@ -245,7 +228,7 @@ private Logger logger = Logger.getLogger(getClass());
 			begin.setTime(sdf.parse(TheBeginDate));
 			end.setTime(sdf.parse(TheEndDate));
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("请求参数异常Area_ID->"+Area_ID+",TheBeginDate->"+TheBeginDate+",TheEndDate->"+TheEndDate);
 			return CommonUtils.getFailJson().toString();
 		}
@@ -1091,7 +1074,7 @@ private Logger logger = Logger.getLogger(getClass());
 			end = sdf.parse(TheEndDate);
 			tableNameSuffixArr = CommonUtils.getTableNameSuffix(start, end);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("参数异常TheBeginDate->"+TheBeginDate+",TheEndDate->"+TheEndDate
 					+",Meter_ID->"+Meter_ID);
 			return jsonArray;
@@ -1172,7 +1155,7 @@ private	JSONArray FLFlow(String Meter_ID,String TheBeginDate,String TheEndDate)
 		end = sdf.parse(TheEndDate);
 		tableNameSuffixArr = CommonUtils.getTableNameSuffix(start, end);
 	}catch(Exception e){
-		logger.error(e);
+		logger.error(e.toString());
 		logger.error("参数异常TheBeginDate->"+TheBeginDate+",TheEndDate->"+TheEndDate
 				+",Meter_ID->"+Meter_ID);
 		return jsonArray;
@@ -1207,7 +1190,7 @@ private	JSONArray FLFlow(String Meter_ID,String TheBeginDate,String TheEndDate)
 			areaIDInt = Integer.parseInt(Area_ID);
 			meterIDInt = Integer.parseInt(Meter_ID);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("参数异常：Area_ID->"+Area_ID+",User_ID->"+User_ID+",Meter_ID->"+Meter_ID);
 			return CommonUtils.getFailJson().toString();
 		}
@@ -1274,7 +1257,7 @@ private	JSONArray FLFlow(String Meter_ID,String TheBeginDate,String TheEndDate)
 		try{
 			areaIDInt = Integer.parseInt(Area_ID);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("参数异常Area_ID->"+Area_ID);
 			return CommonUtils.getFailJson().toString();
 		}
@@ -1547,7 +1530,7 @@ private	JSONArray GrossNight(String Area_ID,String TheDate) throws ParseExceptio
 		try{
 			areaIDInt = Integer.parseInt(Area_ID);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("请求参数异常Area_ID->"+Area_ID);
 			return CommonUtils.getFailJson().toString();
 		}
@@ -1676,7 +1659,7 @@ private	JSONArray GrossNight(String Area_ID,String TheDate) throws ParseExceptio
 					String meterTimeStr = sdf.format(meter.getMeterTime());
 					meterJson.put("Meter_Time", meterTimeStr);
 				}catch(Exception e){
-					logger.error(e);
+					logger.error(e.toString());
 					logger.error("meterTime解析异常，现在把meterTime设置为空字符串");
 					meterJson.put("Meter_Time", "");
 				}
@@ -1742,7 +1725,7 @@ private	JSONArray GrossNight(String Area_ID,String TheDate) throws ParseExceptio
 			selectMonth = selectCalendar.get(Calendar.MONTH) + 1;
 			selectDay = selectCalendar.get(Calendar.DAY_OF_MONTH);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("请求参数异常Area_ID->"+Area_ID+",TheDate->"+TheDate);
 			return CommonUtils.getFailJson().toString();
 		}
@@ -1796,7 +1779,7 @@ private	JSONArray GrossNight(String Area_ID,String TheDate) throws ParseExceptio
 //			yearSumGrossIn = Float.parseFloat(yearSumGrossInStr);
 //			yearSumGrossOut = Float.parseFloat(yearSumGrossOutStr);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("查询T_AreaDay里面的总进出水量有问题");
 		}
 		float dayLose = CommonUtils.subtract(daySumGrossIn, daySumGrossOut);
@@ -1866,7 +1849,7 @@ private	JSONArray GrossNight(String Area_ID,String TheDate) throws ParseExceptio
 					Type = null;
 				}
 			}catch(Exception e){
-				logger.error(e);
+				logger.error(e.toString());
 				logger.error("请求参数异常Area_ID->"+Area_ID+",Type->"+Type);
 				return CommonUtils.getFailJson().toString();
 			}

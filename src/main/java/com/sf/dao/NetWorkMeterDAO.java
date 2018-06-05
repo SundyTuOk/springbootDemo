@@ -7,9 +7,10 @@ import com.sf.bean.NetWork;
 import com.sf.bean.NetWorkMeter;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
 
 @Mapper
-@Lazy(value = true)
+@Repository
 public interface NetWorkMeterDAO {
 	
 	/**

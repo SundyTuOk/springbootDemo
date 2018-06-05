@@ -14,11 +14,12 @@ import javax.servlet.http.Cookie;
 
 import net.sf.json.JSONObject;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CommonUtils {
 	
-	private static Logger logger = Logger.getLogger(CommonUtils.class);
+	private static Logger logger = LoggerFactory.getLogger(CommonUtils.class);
 	
 	/**
      * 生成32位md5码

@@ -1,46 +1,26 @@
 package com.sf.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.apache.log4j.Logger;
+import com.sf.bean.*;
+import com.sf.commonbase.Transaction;
+import com.sf.dao.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
 
-import com.sf.bean.Area;
-import com.sf.bean.ErrList;
-import com.sf.bean.IndexPageMeter;
-import com.sf.bean.Meter;
-import com.sf.bean.NetWork;
-import com.sf.bean.NetWorkMeter;
-import com.sf.bean.T_AreaDay;
-import com.sf.bean.T_WADay;
-import com.sf.commonbase.Transaction;
-import com.sf.dao.AreaDAO;
-import com.sf.dao.DictionaryValueDAO;
-import com.sf.dao.ErrListDAO;
-import com.sf.dao.IndexPageMeterDAO;
-import com.sf.dao.MeterDAO;
-import com.sf.dao.NetWorkDAO;
-import com.sf.dao.NetWorkMeterDAO;
-import com.sf.dao.PNetWorkDAO;
-import com.sf.dao.T_AreaDayDAO;
-import com.sf.dao.T_WADayDAO;
-import com.sf.dao.TexingValueDAO;
-import com.sf.dao.ZDAO;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 @Service("indexService")
 @Lazy(value = true)
 public class IndexService {
 	
-	private Logger logger = Logger.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	// 事务管理
 	@Autowired
@@ -82,9 +62,10 @@ public class IndexService {
 
 	@Autowired
 	private ErrListDAO errListDAO;
+
 	/**
-	 *根据地区ID查询下级地区的个数
-	 * @param area_ID
+	 * 根据地区ID查询下级地区的个数
+	 * @param Area_ID
 	 * @return
 	 */
 	public int getSubordinateRegion(Integer Area_ID) {
@@ -92,8 +73,8 @@ public class IndexService {
 	}
 
 	/**
-	 *根据地区ID查询下级地区管道的个数
-	 * @param area_ID
+	 * 根据地区ID查询下级地区管道的个数
+	 * @param Area_ID
 	 * @return
 	 */
 	public int getAreaNetWork(Integer Area_ID) {
@@ -195,7 +176,7 @@ public class IndexService {
 			txManager.commit(status);
 			return true;
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("插入IndexPageMeter失败,请检查数据库连接情况");
 			txManager.rollback(status);
 			return false;
@@ -209,10 +190,11 @@ public class IndexService {
 	public IndexPageMeter getIndexPageMeter(IndexPageMeter indexPageMeter){
 		return indexPageMeterDAO.getIndexPageMeter(indexPageMeter);
 	}
-	
+
 	/**
 	 * 根据IndexPageMeter表里面的MeterID查找所有的设备
-	 * @param indexPageMeterID
+	 * @param areaID
+	 * @param userID
 	 * @return
 	 */
 	public List<Meter> getMeterFromIndexPageMeterID(int areaID,String userID){

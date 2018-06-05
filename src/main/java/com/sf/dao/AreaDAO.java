@@ -3,11 +3,12 @@ package com.sf.dao;
 import com.sf.bean.Area;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
-@Lazy(value = true)
+@Repository
 public interface AreaDAO {
 	
 	/**

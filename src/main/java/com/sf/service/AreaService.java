@@ -1,31 +1,20 @@
 package com.sf.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import net.sf.json.JSONArray;
-
-import org.apache.log4j.Logger;
+import com.sf.bean.Area;
+import com.sf.dao.AreaDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sf.bean.Area;
-import com.sf.dao.AreaDAO;
+import java.io.IOException;
+import java.util.*;
 
 @Service("areaService")
 @Lazy(value = true)
 public class AreaService {
-	private Logger logger = Logger.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private AreaDAO areaDAO;

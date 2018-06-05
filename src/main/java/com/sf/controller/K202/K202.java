@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,7 +26,7 @@ import com.sf.utils.Constant;
 @RequestMapping("/K202")
 public class K202 {
 	
-	private Logger logger = Logger.getLogger(K202.class);
+	private Logger logger = LoggerFactory.getLogger(K202.class);
 
 	@Resource(name = "wTestService")
 	private WTestService wTestService;
@@ -112,7 +113,7 @@ public class K202 {
 			limit = Integer.parseInt(limitRows);
 			current = Integer.parseInt(currentPage);
 		}catch(NumberFormatException e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入分页限制参数不为数字，limitRows->"+limitRows+"，currentPage->"+currentPage+"，非法参数!");
 			JSONObject json = new JSONObject();
 			JSONArray meterInfos = new JSONArray();
@@ -229,7 +230,7 @@ public class K202 {
 		try{
 			wTestParameterID = Integer.parseInt(WTestParameter_ID);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("水平衡分析列表删除的请求参数异常WTestParameter_ID->"+WTestParameter_ID);
 			return CommonUtils.getFailJson().toString();
 		}
@@ -260,7 +261,7 @@ public class K202 {
 			limit = Integer.parseInt(limitRows);
 			current = Integer.parseInt(currentPage);
 		}catch(NumberFormatException e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入分页限制参数不为数字，limitRows->"+limitRows+"，currentPage->"+currentPage+"，非法参数!");
 			JSONObject json = new JSONObject();
 			JSONArray meterInfos = new JSONArray();

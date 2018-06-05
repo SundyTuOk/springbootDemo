@@ -1,23 +1,21 @@
 package com.sf.controller.analysis;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.sf.service.WTestService;
+import com.sf.utils.CommonUtils;
+import com.sf.utils.Constant;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sf.service.WTestService;
-import com.sf.utils.CommonUtils;
-import com.sf.utils.Constant;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 水平衡分析页面
@@ -28,7 +26,7 @@ import com.sf.utils.Constant;
 @RequestMapping("/K202ttttttttt")
 public class WaterBalanceAnalysis {
 	
-	private Logger logger = Logger.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Resource(name = "wTestService")
 	private WTestService wTestService;
@@ -51,7 +49,7 @@ public class WaterBalanceAnalysis {
 			limit = Integer.parseInt(limitRows);
 			current = Integer.parseInt(currentPage);
 		}catch(NumberFormatException e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入分页限制参数不为数字，limitRows->"+limitRows+"，currentPage->"+currentPage+"，非法参数!");
 			JSONObject json = new JSONObject();
 			JSONArray meterInfos = new JSONArray();
@@ -117,7 +115,7 @@ public class WaterBalanceAnalysis {
 		try{
 			wTestParameterID = Integer.parseInt(WTestParameter_ID);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("水平衡分析列表删除的请求参数异常WTestParameter_ID->"+WTestParameter_ID);
 			return CommonUtils.getFailJson().toString();
 		}
@@ -148,7 +146,7 @@ public class WaterBalanceAnalysis {
 			limit = Integer.parseInt(limitRows);
 			current = Integer.parseInt(currentPage);
 		}catch(NumberFormatException e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入分页限制参数不为数字，limitRows->"+limitRows+"，currentPage->"+currentPage+"，非法参数!");
 			JSONObject json = new JSONObject();
 			JSONArray meterInfos = new JSONArray();

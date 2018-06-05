@@ -1,33 +1,6 @@
 package com.sf.controller.systeminfo;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONNull;
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
-
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.sf.bean.Area;
-import com.sf.bean.DictionaryValue;
-import com.sf.bean.Meter;
-import com.sf.bean.NetWork;
-import com.sf.bean.NetWorkMeter;
-import com.sf.bean.PNetWork;
+import com.sf.bean.*;
 import com.sf.commonbase.JsonDateValueProcessor;
 import com.sf.dao.DictionaryValueDAO;
 import com.sf.service.MeterService;
@@ -35,12 +8,27 @@ import com.sf.service.NetWorkService;
 import com.sf.utils.CommonUtils;
 import com.sf.utils.Constant;
 import com.sf.utils.SpringContextUtil;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/network", produces = "text/html;charset=UTF-8")
 public class NetworkControllor {
 
-	private Logger logger = Logger.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Resource(name = "netWorkService")
 	private NetWorkService netWorkService;
@@ -69,7 +57,7 @@ public class NetworkControllor {
 			limit = Integer.parseInt(limitRows);
 			current = Integer.parseInt(currentPage);
 		} catch (NumberFormatException e) {
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入分页限制参数不为数字，limitRows->" + limitRows
 					+ "，currentPage->" + currentPage + "，非法参数!");
 			JSONObject json = new JSONObject();
@@ -131,7 +119,7 @@ public class NetworkControllor {
 		try{
 			data = JSONObject.fromObject(_data);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("添加管网时addNetWork添加管网传入参数异常_data->"+_data);
 			JSONObject json = new JSONObject();
 			json.put(Constant.RESULT, Constant.FAILED);
@@ -210,7 +198,7 @@ public class NetworkControllor {
 				netWorkMeterList.add(netWorkMeter);
 			}
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("添加管网时addNetWork添加管网传入参数异常enterWaterList->"+enterWaterList
 					+";mapMeterList->"+mapMeterList+";areaID->"+areaID
 					+";pipeNetworkType->"+pipeNetworkType);
@@ -328,7 +316,7 @@ public class NetworkControllor {
 			SearchType = Integer.parseInt(SearchTypes);
 			CurrentSelectSize = Integer.parseInt(CurrentSelectSizes);
 		} catch (NumberFormatException e) {
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入参数不为数字，SearchCode->" + SearchType
 					+ "，currentPage->" + SearchType + "，非法参数!");
 			return "";
@@ -437,7 +425,7 @@ public class NetworkControllor {
 		try {
 			currentSelectSize = Integer.parseInt(currentSelectSizes);
 		} catch (NumberFormatException e) {
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入currentSelectPage参数不为数字，currentSelectPage->"
 					+ currentSelectSize + "，非法参数!");
 
@@ -473,7 +461,7 @@ public class NetworkControllor {
 		try {
 			Dictionary_ID = Integer.parseInt(Dictionary_IDRows);
 		} catch (NumberFormatException e) {
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入ID参数不为数字，Dictionary_ID->" + Dictionary_ID
 					+ "，非法参数!");
 			JSONObject json = new JSONObject();
@@ -555,7 +543,7 @@ public class NetworkControllor {
 			limit = Integer.parseInt(limitRows);
 			current = Integer.parseInt(currentPage);
 		} catch (NumberFormatException e) {
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入分页限制参数不为数字，limitRows->" + limitRows
 					+ "，currentPage->" + currentPage + "，非法参数!");
 			JSONArray meterInfos = new JSONArray();
@@ -623,7 +611,7 @@ public class NetworkControllor {
 			pNetWorkIDInt = Integer.parseInt(pNetWorkID);
 			netWorkIDInt = Integer.parseInt(netWorkID);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("编辑页面删除PNetWork传入参数异常pNetWorkID->"+pNetWorkID
 					+";netWorkID->"+netWorkID);
 			JSONObject json = new JSONObject();
@@ -660,7 +648,7 @@ public class NetworkControllor {
 		try{
 			netWorkMeterIDInt = Integer.parseInt(netWorkMeterID);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("编辑页面删除PNetWork传入参数异常netWorkMeterID->"+netWorkMeterID);
 			JSONObject json = new JSONObject();
 			json.put(Constant.RESULT, Constant.FAILED);
@@ -697,7 +685,7 @@ public class NetworkControllor {
 		try{
 			netWork = netWorkService.getNetWorkByNetWorkNum(netWorkNum);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("根据netWorkNum查询管网数据库操作报错");
 			return null;
 		}

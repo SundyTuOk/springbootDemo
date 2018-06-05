@@ -1,28 +1,5 @@
 package com.sf.controller.systeminfo;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
-
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.sf.bean.Area;
 import com.sf.bean.DictionaryValue;
 import com.sf.bean.Meter;
 import com.sf.commonbase.JsonDateValueProcessor;
@@ -30,16 +7,36 @@ import com.sf.dao.DictionaryValueDAO;
 import com.sf.dao.MeterDAO;
 import com.sf.service.MeterService;
 import com.sf.utils.Constant;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/meter")
 public class DeviceControllor {
-	private Logger logger = Logger.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	@Resource(name="meterDAO")
+	@Autowired
 	private MeterDAO meterDAO;
-	
-	@Resource(name="dictionaryValueDAO")
+
+	@Autowired
 	private DictionaryValueDAO dictionaryValueDAO;
 	
 	
@@ -63,7 +60,7 @@ public class DeviceControllor {
 			limit = Integer.parseInt(limitRows);
 			current = Integer.parseInt(currentPage);
 		}catch(NumberFormatException e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入分页限制参数不为数字，limitRows->"+limitRows+"，currentPage->"+currentPage+"，非法参数!");
 			JSONObject json = new JSONObject();
 			JSONArray meterInfos = new JSONArray();
@@ -126,7 +123,7 @@ public class DeviceControllor {
 		try{
 			dictionaryIDInt = Integer.parseInt(dictionaryID);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("getMeterType请求参数异常:Dictionary_ID->"+dictionaryID);
 		}
 		
@@ -146,7 +143,7 @@ public class DeviceControllor {
 		try{
 			dictionaryIDInt = Integer.parseInt(dictionaryID);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("getMeterType请求参数异常:Dictionary_ID->"+dictionaryID);
 		}
 		
@@ -254,7 +251,7 @@ public class DeviceControllor {
 				meter.setMeterTime(meterTimeDate);
 			}
 		}catch(ParseException e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("添加Meter，传入参数异常meterTime->"+meterTime);
 			JSONObject json = new JSONObject();
 			json.put(Constant.RESULT, Constant.FAILED);
@@ -289,7 +286,7 @@ public class DeviceControllor {
 			}
 			
 		}catch(NumberFormatException e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("添加Meter，传入参数异常beilv->"+beilv+",xiuzheng->"+xiuzheng+",meterValue1->"+meterValue1+",meterValue2->"+meterValue2+",meterValue3->"+meterValue3+",meterValue4->"+meterValue4);
 			JSONObject json = new JSONObject();
 			json.put(Constant.RESULT, Constant.FAILED);
@@ -316,7 +313,7 @@ public class DeviceControllor {
 				texingMap.put(Integer.valueOf(texingKeyValue[0]), texingKeyValue[1]);
 			}
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("添加设备Meter时参数asyList->"+asyList);
 			// 这里修改，有的设备本身就没有特性，所以就算没有特性，也要成功添加设备,不失败
 //			json.put(Constant.RESULT, Constant.FAILED);
@@ -459,7 +456,7 @@ public class DeviceControllor {
 			limit = Integer.parseInt(limitRows);
 			current = Integer.parseInt(currentPage);
 		}catch(NumberFormatException e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.error("传入分页限制参数不为数字，limitRows->"+limitRows+"，currentPage->"+currentPage+"，非法参数!");
 			JSONObject json = new JSONObject();
 			JSONArray meterInfos = new JSONArray();
@@ -472,7 +469,7 @@ public class DeviceControllor {
 			retMap = meterService.getMetersByFuzzy(searchCondition,limit,current,
 					sortName,sortType);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.toString());
 			logger.info("select * from Meter where  模糊查询条件->"+searchCondition+"，返回空详细信息json数据体");
 			JSONObject json = new JSONObject();
 			json.put(Constant.JSON_COUNT, 0);
